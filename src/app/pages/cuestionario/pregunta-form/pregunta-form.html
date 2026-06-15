@@ -1,0 +1,126 @@
+<div class="modal-backdrop" (click)="cerrar.emit(false)">
+  <div class="modal-contenido" (click)="$event.stopPropagation()">
+
+    <h3>{{ esRegistro ? 'Nueva pregunta' : 'Editar pregunta' }}</h3>
+
+    <div class="campo-formulario">
+      <label>Texto de la pregunta:</label>
+      <input [(ngModel)]="form.descripcion"
+            #descripcionInput
+            placeholder="">
+    </div>
+
+    <div class="campo-obligatorio">
+      <label class="obligatorio-label">¿Es obligatoria?</label>
+
+      <div class="opciones-radio">
+        <label>
+          <input type="radio" [(ngModel)]="form.obligatorio" value="S">
+          Sí
+        </label>
+
+        <label>
+          <input type="radio" [(ngModel)]="form.obligatorio" value="N">
+          No
+        </label>
+      </div>
+    </div>
+
+    <div class="campo-formulario">
+      <label>Siguiente pregunta:</label>
+      <select [(ngModel)]="form.idSiguientePregunta" (ngModelChange)="onSiguientePreguntaChange($event)">
+        <option [ngValue]="null">-- Seleccione --</option>
+        <option *ngFor="let p of preguntasDisponibles" [ngValue]="p.id">{{ p.descripcion }}</option>
+      </select>
+    </div>
+
+    <div class="campo-formulario">
+      <label>Tipo de respuesta:</label>
+      <select [(ngModel)]="form.tipo" (ngModelChange)="onTipoChange($event)">
+        <option value="">-- Seleccione --</option>
+        <option value="T">Texto</option>
+        <option value="N">Número</option>
+        <option value="F">Fecha</option>
+        <option value="O">Opción múltiple</option>
+      </select>
+    </div>
+    
+
+    <div *ngIf="form.tipo === 'O'" class="bloque-opciones">
+      <h4>Opciones</h4>
+      <button (click)="agregarOpcion()" class="btn-agregar-opcion">Agregar Opción</button>
+
+      <div class="tabla-opciones-wrapper">
+        <table class="tabla-opciones">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Texto de la opción</th>
+              <th *ngIf="mostrarColumnaSiguientePregunta">ID siguiente pregunta</th>
+              <th>Eliminar</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let o of form.opciones; let i = index">
+              <td>{{i+1}}</td>
+              <td>
+                <input [(ngModel)]="o.descripcion" placeholder="">
+              </td>
+              <td *ngIf="mostrarColumnaSiguientePregunta">
+                <select [(ngModel)]="o.idSiguientePregunta">
+                  <option value="">-- Seleccione --</option>
+                  <option *ngFor="let p of preguntasDisponibles" [value]="p.id">{{ p.descripcion }}</option>
+                </select>
+              </td>
+              <td>
+                <button class="btn-eliminar-opcion"
+                        type="button"
+                        (click)="eliminarOpcion(i)"
+                        >
+                  ✕
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+
+    <div class="botones">
+      <button class="boton" (click)="guardar()">Guardar</button>
+      <button class="boton" (click)="cerrar.emit(false)">Cancelar</button>
+    </div>
+
+  </div>
+</div>
+
+<!-- MODAL VALIDACIÓN -->
+<div *ngIf="mostrarModalValidacion" class="modal-overlay">
+  <div class="modal-msg">
+
+    <h4 class="modal-titulo">Mensaje</h4>
+
+    <p>{{ mensajeModal }}</p>
+
+    <div class="modal-botones">
+      <button class="boton" (click)="cerrarModal()">Aceptar</button>
+    </div>
+
+  </div>
+</div>
+
+<!-- MODAL CONFIRMACIÓN -->
+<div *ngIf="mostrarModalConfirmacion" class="modal-overlay">
+  <div class="modal-msg">
+    
+    <h4 class="modal-titulo">Confirmación</h4>
+    
+    <p>{{ mensajeModal }}</p>
+    
+    <div class="modal-botones">
+      <button class="boton" (click)="confirmarGuardar()">Aceptar</button>
+      <button class="boton" (click)="cerrarModal()">Cancelar</button>
+    </div>
+  </div>
+</div>

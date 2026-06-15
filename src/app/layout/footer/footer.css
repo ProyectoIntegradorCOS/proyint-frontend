@@ -1,0 +1,11 @@
+.app-footer {
+    height: 36px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:#f4f6f8;
+    border-top:1px solid #e6e9ee;
+    font-size:13px;
+    color:#666;
+  }
+  

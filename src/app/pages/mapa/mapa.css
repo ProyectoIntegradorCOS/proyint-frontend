@@ -1,0 +1,298 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 0;
+  min-height: 0; /* permite que el mapa ocupe todo el espacio */
+  font-family: Arial, sans-serif;
+}
+
+/* Header compacto */
+header {
+  background: #ffffff;
+  color: #000000;
+  text-align: center;
+  padding: 10px 0;
+  flex-shrink: 0;
+}
+
+header h1 {
+  font-size: 18px;
+  margin: 0;
+}
+
+/* Filtros */
+#filtros {
+  padding: 4px 8px;
+  background: #ffffff;
+  flex-shrink: 0;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+/* Mapa ocupa todo el espacio restante */
+#map {
+  flex: 1 1 0;
+  min-height: 0; /* importante para ajustar altura */
+  width: 100%;
+  height: calc(100vh - 140px);
+  position: relative;
+}
+
+/* [CHANGE][autor: cormenos@onp.gob.pe][fecha: 2026-01-07 09:26 UTC-5 (Lima)][desc: Estilos de marcadores del plan con check en seguimiento][obj: mapa.css plan markers] */
+.plan-marker-wrapper {
+  background: transparent;
+  border: none;
+}
+
+.plan-marker {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: #ffffff;
+  border: 2px solid #2c3e50;
+  color: #2c3e50;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 24px;
+  text-align: center;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+}
+
+.plan-marker.plan-pending {
+  background: #f2f4f8;
+  border-color: #7b8794;
+  color: #52606d;
+}
+
+.plan-marker.plan-enroute {
+  background: #fff3cd;
+  border-color: #b26a00;
+  color: #8a4b00;
+}
+
+.plan-marker.plan-invisit {
+  background: #cfe2ff;
+  border-color: #0b5ed7;
+  color: #0b5ed7;
+}
+
+.plan-marker.plan-done {
+  background: #d4edda;
+  border-color: #2e7d32;
+  color: #2e7d32;
+}
+
+/* Leyenda */
+#leyenda {
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  background: rgba(255,255,255,0.9);
+  padding: 8px 10px;
+  border-radius: 5px;
+  font-size: 14px;
+  line-height: 1.4;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+  z-index: 1000;
+  max-height: 200px;
+  overflow-y: auto; /* solo leyenda puede hacer scroll */
+  min-width: 140px;     /* 👈 clave */
+}
+
+#leyenda span {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  margin-right: 6px;
+  border-radius: 50%;
+}
+
+/* [CHANGE][autor: cormenos@onp.gob.pe][fecha: 2026-01-07 09:52 UTC-5 (Lima)][desc: Estilos de leyenda de estados del plan en seguimiento][obj: mapa.css plan legend] */
+.leyenda-plan {
+  margin-top: 8px;
+  padding-top: 6px;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  font-size: 12px;
+}
+
+.leyenda-plan-title {
+  font-weight: 700;
+  margin-bottom: 6px;
+  color: #1a1a1a;
+}
+
+.leyenda-plan-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 4px;
+}
+
+.leyenda-plan-item:last-child {
+  margin-bottom: 0;
+}
+
+.leyenda-plan .plan-marker {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #ffffff;
+  border: 2px solid #2c3e50;
+  color: #2c3e50;
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 16px;
+  text-align: center;
+}
+
+.leyenda-plan .plan-marker.plan-pending {
+  background: #f2f4f8;
+  border-color: #7b8794;
+  color: #52606d;
+}
+
+.leyenda-plan .plan-marker.plan-enroute {
+  background: #fff3cd;
+  border-color: #b26a00;
+  color: #8a4b00;
+}
+
+.leyenda-plan .plan-marker.plan-invisit {
+  background: #cfe2ff;
+  border-color: #0b5ed7;
+  color: #0b5ed7;
+}
+
+.leyenda-plan .plan-marker.plan-done {
+  background: #d4edda;
+  border-color: #2e7d32;
+  color: #2e7d32;
+}
+
+/* [CHANGE][autor: cormenos@onp.gob.pe][fecha: 2026-01-07 14:25 UTC-5 (Lima)][desc: Estilos de leyenda para inicio del plan y prioridades][obj: mapa.css plan start/priority legend] */
+.leyenda-plan .plan-marker.plan-start {
+  background: #ffeb3b;
+  border-color: #f57f17;
+  color: #1a1a1a;
+}
+
+/* [CHANGE][autor: cormenos@onp.gob.pe][fecha: 2026-01-14 11:27 UTC-5 (Lima)][desc: Estilo de leyenda para fin del plan][obj: mapa.css plan end legend] */
+.leyenda-plan .plan-marker.plan-end {
+  background: #e0f7fa;
+  border-color: #006064;
+  color: #004d40;
+}
+
+.leyenda-plan .plan-marker.plan-priority {
+  position: relative;
+  background: #ffffff;
+  border-color: #2c3e50;
+}
+
+.leyenda-plan .plan-marker.plan-priority::after {
+  content: '';
+  position: absolute;
+  inset: -4px;
+  border-radius: 50%;
+  border: 2px solid transparent;
+}
+
+.leyenda-plan .plan-marker.plan-priority.muy-alta::after {
+  border-color: #c62828;
+}
+
+.leyenda-plan .plan-marker.plan-priority.alta::after {
+  border-color: #ef6c00;
+}
+
+.leyenda-plan .plan-marker.plan-priority.normal::after {
+  border-color: #616161;
+}
+
+
+
+
+
+#modalCarga, #modalMensaje {
+  display: none;
+  position: fixed; /* ✅ usar fixed para posicionarse sobre toda la pantalla */
+  z-index: 2000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(2px);
+}
+
+#modalContenido, #modalMensajeContenido {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%); /* ✅ centrado vertical y horizontal */
+  background: white;
+  padding: 20px 40px;
+  border-radius: 8px;
+  font-family: Arial, sans-serif;
+  font-size: 16px;
+  text-align: center;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+}
+
+#modalMensajeContenido button {
+  margin-top: 15px;
+  padding: 6px 14px;
+  border: none;
+  background: #2c3e50;
+  color: white;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+#modalMensajeContenido button:hover { 
+  background: #1a252f; 
+}
+
+#buscar {
+  background-color: #3182d3; /* azul vistoso */
+  color: white;
+  padding: 6px 12px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background-color 0.2s ease;
+}
+
+#buscar:hover {
+  background-color: #125ca1; /* tono más oscuro al pasar el mouse */
+}
+
+#limpiar {
+  background-color: #3182d3; /* azul vistoso */
+  color: white;
+  padding: 6px 12px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background-color 0.2s ease;
+}
+
+#limpiar:hover {
+  background-color: #125ca1; /* tono más oscuro al pasar el mouse */
+}
+
+.leyenda-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.leyenda-toggle {
+  font-size: 16px;
+  margin-left: 10px;
+}

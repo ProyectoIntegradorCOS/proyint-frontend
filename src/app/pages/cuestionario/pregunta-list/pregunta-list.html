@@ -1,0 +1,66 @@
+<div class="preguntas-header">
+  <h3>Preguntas</h3>
+  @if(modo === 'registro' || mostrarEditar) {
+  <button class="boton" (click)="nuevo()">Agregar Pregunta</button>
+  }
+</div>
+
+
+<div class="tabla-contenedor">
+  <table>
+    <tr>
+      <th>#</th>
+      <th>Descripción</th>
+      <th>Obligatoria</th>
+      <th>Tipo</th>
+      @if(modo === 'registro' || mostrarEditar) {
+      <th>Orden</th>      
+      <th>Editar</th>
+      <th>Eliminar</th>
+      }
+    </tr>
+    
+    <tr *ngFor="let p of preguntas; let i = index">
+      <td>{{ p.orden }}</td>
+      <td>{{ p.descripcion }}</td>
+      <td>{{ p.obligatorio === 'S' ? 'Sí' : p.obligatorio === 'N' ? 'No' : p.obligatorio }}</td>
+      <td>{{ p.tipo | tipoPregunta }}</td>
+      @if(modo === 'registro' || mostrarEditar) {
+      <td class="orden-col">
+        <button (click)="subir(i)" [disabled]="i === 0">▲</button>
+        <button (click)="bajar(i)" [disabled]="i === preguntas.length - 1">▼</button>
+      </td>
+      <td>
+        <button (click)="editar(p)">✏️</button>    
+      </td>
+      <td>
+        <button (click)="eliminar(p)">🗑️</button>
+      </td>
+    }
+    </tr>
+  </table>
+</div>
+
+<app-pregunta-form
+  *ngIf="mostrarForm"
+  [pregunta]="seleccionada"
+  [idCuestionario]="idCuestionario"
+  (cerrar)="cerrar($event)">
+</app-pregunta-form>
+
+<!-- Modal de confirmación -->
+<div class="modal-backdrop" *ngIf="preguntaAEliminar">
+  <div class="modal">
+    <h3>Confirmación</h3>
+
+    <!-- [CHANGE][autor: cormenos@onp.gob.pe][fecha: 2026-01-16 11:47 UTC-5 (Lima)][desc: Soporta MaterialLocalizations para es_PE/es_ES (historial por fecha)][obj: PreguntaListComponent eliminar warning] -->
+    <p>
+      ¿Está seguro que desea eliminar la pregunta? También se eliminarán sus opciones relacionadas.
+    </p>
+
+    <div class="modal-botones">      
+      <button class="btn-eliminar" (click)="confirmarEliminar()">Eliminar</button>
+      <button class="btn-cancelar" (click)="cancelarEliminar()">Cancelar</button>
+    </div>
+  </div>
+</div>

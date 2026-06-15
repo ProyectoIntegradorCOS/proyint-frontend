@@ -1,0 +1,15 @@
+<div class="home-container">
+  <h2>Inicializando sesión...</h2>
+
+  <!-- Mostrar mientras se obtiene el token -->
+  <p *ngIf="loading">⏳ Obteniendo token desde el servidor...</p>
+
+  <!-- Mostrar si el token se obtuvo correctamente -->
+  <p *ngIf="!loading && token">✔️ Token recibido, redirigiendo...</p>
+
+  <!-- Mostrar si hubo error o no se pudo obtener token -->
+  <p *ngIf="!loading && !token">
+     ❌ No se pudo obtener el token de inicio de sesión.
+     <br/>
+     Contacte al Administrador del sistema.</p>
+</div>

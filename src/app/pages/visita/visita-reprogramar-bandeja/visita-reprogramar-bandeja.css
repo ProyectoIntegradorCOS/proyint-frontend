@@ -1,0 +1,319 @@
+/* [CHANGE][autor: cormenos@onp.gob.pe][fecha: 2026-01-21 15:01 UTC-5 (Lima)][desc: Estilos para bandeja de reprogramacion de visitas][obj: visita-reprogramar-bandeja.css] */
+.visita-programacion {
+  padding: 12px;
+  font-family: Arial, sans-serif;
+}
+
+header {
+  background: #ffffff;
+  color: #000000;
+  padding: 10px;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+header h1 {
+  font-size: 18px;
+  margin: 0;
+}
+
+.filtros {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 10px;
+  align-items: flex-end;
+  flex-wrap: wrap;
+}
+
+.filtros input,
+.filtros select {
+  padding: 4px 8px;
+}
+
+.tabla-contenedor table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.tabla-contenedor th,
+.tabla-contenedor td {
+  border: 1px solid #ccc;
+  padding: 6px;
+  text-align: left;
+}
+
+.tabla-contenedor th {
+  background: #2c3e50;
+  color: white;
+}
+
+.btn-editar {
+  cursor: pointer;
+  padding: 4px 8px;
+  background: #2c3e50;
+  color: white;
+  border: none;
+  border-radius: 4px;
+}
+
+
+
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 3000;
+}
+
+.modal-dialog {
+  background: white;
+  padding: 16px;
+  border-radius: 8px;
+  width: 600px;
+  max-width: 90%;
+}
+
+.modal-row {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 10px;
+  gap: 6px;
+}
+
+.modal-row select,
+.modal-row input,
+.modal-row textarea {
+  padding: 6px;
+}
+
+.modal-row button {
+  align-self: flex-start;
+}
+
+.modal-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: center; /* 👈 centrados */
+  margin-top: 12px;
+}
+
+#modalMensaje {
+  display: flex;
+  position: fixed;
+  z-index: 3001;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.4);
+  align-items: center;
+  justify-content: center;
+}
+
+#modalMensajeContenido {
+  background: white;
+  padding: 20px 40px;
+  border-radius: 8px;
+  font-size: 16px;
+  text-align: center;
+}
+
+#modalMensajeContenido button {
+  margin-top: 15px;
+  padding: 6px 14px;
+  border: none;
+  background: #2c3e50;
+  color: white;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.modal-section {
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  padding: 12px;
+  margin-bottom: 14px;
+  background: #f9f9f9;
+}
+
+.modal-section-title {
+  font-weight: bold;
+  font-size: 14px;
+  margin-bottom: 10px;
+  color: #2c3e50;
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 4px;
+}
+
+
+/* Plan de visita anterior: label + valor en una sola fila */
+.modal-section:first-of-type .modal-row {
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Alinear y dar ancho consistente al label */
+.modal-section:first-of-type .modal-row label {
+  min-width: 100px;
+  font-weight: bold;
+  color: #333;
+}
+
+/* Estilo del valor (span) */
+.modal-section:first-of-type .modal-row span {
+  flex: 1;
+  color: #000;
+}
+
+
+.modal-header {
+  background-color: #2c3e50;
+  padding: 6px 14px; /* 👈 menos alto */
+  border-radius: 8px 8px 0 0;
+  margin-bottom: 8px; /* 👈 separación con la sección siguiente */
+}
+
+
+.modal-header h3 {
+  margin: 0;
+  color: #ffffff;
+  font-size: 17px;
+  font-weight: 600;
+  line-height: 1.2; /* 👈 evita que crezca en vertical */
+  text-align: center;
+}
+
+
+/* Reprogramación: label + control en una sola fila */
+.modal-section:nth-of-type(2) .modal-row {
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Labels con ancho fijo */
+.modal-section:nth-of-type(2) .modal-row label {
+  min-width: 110px;
+  font-weight: bold;
+  color: #333;
+}
+
+/* Inputs y selects ocupan el resto */
+.modal-section:nth-of-type(2) .modal-row input,
+.modal-section:nth-of-type(2) .modal-row select,
+.modal-section:nth-of-type(2) .modal-row textarea {
+  flex: 1;
+}
+
+/* Calendario más compacto */
+.modal-section:nth-of-type(2) input[type="date"] {
+  max-width: 160px;
+}
+
+
+.boton {
+    background-color: #3182d3; /* azul vistoso */
+    color: white;
+    padding: 5px 15px;     /* 👈 menos alto (antes 10px) */
+    border: 1px solid #007bff;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background-color 0.2s ease;
+  }
+  
+  .boton:hover {
+    background: #1a252f;
+  }
+
+  .modal-contenido {
+    background: #ffffff;
+    padding: 25px;
+    border-radius: 10px;
+    width: 360px;
+    max-width: 90vw;
+    text-align: center;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.25);
+    animation: modalAnimacion 0.25s ease-out;
+  }
+
+  .modal-titulo {
+    margin: 0 0 10px;
+    font-size: 20px;
+    font-weight: bold;
+    color: #2c3e50;
+  }
+  
+  .modal-mensaje {
+    font-size: 15px;
+    margin-bottom: 20px;
+    color: #333;
+  }
+
+
+  /* Paginación */
+.paginacion {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+  
+  .paginacion button {
+    background: #2c3e50;
+    color: white;
+    padding: 4px 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .paginacion button:hover:not(:disabled) {
+    background: #1a252f;
+  }
+  
+  .paginacion button:disabled {
+    background: #8a8a8a;
+    cursor: default;
+  }
+
+ 
+
+  /* Botones de paginación uniformes */
+  .paginacion .controles {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: nowrap; /* 🔑 clave */
+  }
+
+  .paginacion .controles span {
+    white-space: nowrap;
+  }
+
+.paginacion .controles button {
+  width: 34px;
+  height: 28px;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+}
+
+.select-pagina {
+  padding: 4px 8px;
+  margin: 0 6px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+

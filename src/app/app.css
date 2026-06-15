@@ -1,0 +1,53 @@
+:root {
+  --sidebar-width: 220px;
+  --topbar-height: 60px;
+  --footer-height: 36px; /* altura del footer */
+}
+
+html, body, app-root {
+  height: 100%;
+  margin: 0;
+  font-family: Arial, sans-serif;
+}
+
+div {
+  font-size: 14px;
+}
+
+.app-shell {
+  display: flex;
+  flex-direction: column;
+  height: 100vh; /* ocupa toda la ventana */
+  /* overflow: hidden; */ /* evita scroll del contenedor principal */
+}
+
+app-topbar {
+  flex-shrink: 0;
+  height: var(--topbar-height);
+}
+
+app-footer {
+  flex-shrink: 0;
+  height: var(--footer-height);
+}
+
+.main-area {
+  display: flex;
+  flex: 1;
+  /* overflow: hidden;*/ /* evita scroll interno */
+}
+
+app-sidebar {
+  width: var(--sidebar-width);
+  flex-shrink: 0;
+  height: 100%;
+  overflow: auto; /* solo el sidebar puede scrollear si hay muchas opciones */
+}
+
+.content-area {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  /* overflow: hidden; */ /* evita scroll interno */
+  background: #ffffff;
+}

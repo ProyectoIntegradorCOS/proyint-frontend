@@ -1,0 +1,139 @@
+<div class="modal-principal"></div>
+
+<div class="modal">
+  <h2 class="modal-titulo-principal">{{ modo === 'registro' ? 'Registrar Equipo' : 'Editar Equipo' }}</h2>
+
+  <form #formEquipo="ngForm">
+
+    <!-- NOMBRE -->
+    <div class="form-row">
+      <label>Nombre del equipo (*)</label>
+      <input 
+        type="text"
+        name="nombre"
+        maxlength="60"
+        style="text-transform: uppercase;"
+        [(ngModel)]="equipo.nombre"
+      />
+    </div>
+  
+    <!-- SUPERVISOR -->
+    <div class="form-row">
+      <label>Líder (*)</label>
+      <select 
+        name="supervisorId"
+        [(ngModel)]="equipo.supervisorId"
+      >
+        <option value="null">-- Seleccionar  líder --</option>
+        <option *ngFor="let sp of supervisores" [value]="sp.id">
+          {{ sp.label }}
+        </option>
+      </select>
+    </div>
+
+    <!--
+    <div class="form-row">
+      <label>Realiza visitas (*)</label>
+      <select 
+        name="realizaVisitas"
+        [(ngModel)]="equipo.realizaVisitas"
+      >
+        <option value="">-- Seleccionar --</option>
+        <option [ngValue]="true">Sí</option>
+        <option [ngValue]="false">No</option>
+      </select>
+    </div>
+    -->
+  
+    <!-- CUESTIONARIO -->
+    <div class="form-row">
+      <label>Cuestionario (*)</label>
+      <select 
+        name="idCuestionario"
+        [(ngModel)]="equipo.idCuestionario"
+      >
+        <option value="null">-- Seleccionar cuestionario --</option>
+        <option *ngFor="let c of cuestionarios" [value]="c.id">
+          {{ c.label }}
+        </option>
+      </select>
+    </div>
+
+    <span class="obligatorios-msg">(*): Campo obligatorio</span>
+
+    <!-- BOTONES -->
+    <div class="acciones">
+      <button type="button" class="boton" [disabled]="formEquipo.invalid" (click)="validarEquipo()">Guardar</button>
+      <button type="button" class="boton" (click)="cerrar()">Cancelar</button>
+    </div>
+  
+  </form>
+  
+</div>
+
+<!-- MODAL DE CONFIRMACION -->
+<div class="modal-backdrop" *ngIf="mostrarModalConfirmacion">
+  <div class="modal-contenido">
+      <h3 class="modal-titulo">
+          Confirmación
+      </h3>
+
+      <p class="modal-mensaje">
+          ¿Desea guardar los datos?
+      </p>
+
+      <div class="modal-actions">
+          <button class="boton" (click)="aceptarGuardar()">
+              Aceptar
+          </button>
+
+          <button class="boton" (click)="cancelarGuardar()">
+              Cancelar
+          </button>
+      </div>
+  </div>
+</div>
+
+<!-- MODAL DE MENSAJE -->
+<div class="modal-backdrop" *ngIf="mostrarExito">
+  <div class="modal-contenido">
+      <h3 class="modal-titulo">
+          Mensaje
+      </h3>
+
+      <p class="modal-mensaje">
+        Operación realizada correctamente.
+      </p>
+
+      <div class="modal-actions">
+          <button class="boton" (click)="cerrarModalExito()">
+              Aceptar
+          </button>
+      </div>
+  </div>
+</div>
+
+<!-- MODAL DE MENSAJE -->
+<div class="modal-backdrop" *ngIf="mostrarMensaje">
+  <div class="modal-contenido">
+      <h3 class="modal-titulo">
+          Mensaje
+      </h3>
+
+      <p class="modal-mensaje">
+          {{ mensajeTexto }}
+      </p>
+
+      <div class="modal-actions">
+          <button class="boton" (click)="cerrarModalMensaje()">
+              Aceptar
+          </button>
+      </div>
+  </div>
+</div>
+
+
+<!-- Modal de procesando -->
+<div id="modalCarga" [style.display]="mostrarCarga ? 'block' : 'none'">
+  <div id="modalContenido">⏳ Cargando, por favor espere...</div>
+</div>

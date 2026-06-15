@@ -1,0 +1,201 @@
+.modal-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Fondo oscuro */
+    display: flex;
+    justify-content: center; /* Centrado horizontal */
+    align-items: center; /* Centrado vertical */
+    z-index: 3000; /* Asegura que esté por encima de todo */
+}
+
+.modal-contenido {
+    background-color: white;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    max-height: 90vh;
+    overflow-y: auto;
+    min-width: 350px;
+    position: relative; /* necesario para posicionar el botón */
+  }
+
+  .destino-modal {
+    min-width: 600px;
+    max-width: 70vw;
+}
+
+.modal-titulo {
+    border-bottom: 2px solid #eee;
+    padding-bottom: 10px;
+    margin-top: 0;
+    color: #333;
+  }
+
+.destino-buscar {
+    display: grid;
+    grid-template-columns:
+        70px 320px   /* Destino */
+        80px 320px   /* Dirección */
+        auto auto auto; /* Botones */
+    gap: 10px;
+    align-items: center;
+}
+
+.boton {
+    background-color: #3182d3; /* azul vistoso */
+    color: white;
+    padding: 6px 12px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background-color 0.2s ease;
+  }
+
+.boton:hover {
+    background: #1a252f;
+}
+
+.tabla-scroll {
+    max-height: 400px;       /* ajusta según tu diseño */
+    overflow-y: auto;
+    margin-top: 8px;
+}
+
+/* Header fijo */
+.tabla-scroll thead th {
+    position: sticky;
+    top: 0;
+    background: #95a5a6;     /* mismo color que tu h3 */
+    z-index: 2;
+}
+
+/* Evita que el header se vea "cortado" */
+.tabla-scroll thead th {
+    border-bottom: 2px solid #ccc;
+}
+
+.destino-modal .tabla-resultados {
+    width: 100%;
+    border-collapse: collapse;
+    border: 1px solid #cbd5e1;
+}
+
+/* Celdas */
+.destino-modal .tabla-resultados th,
+.destino-modal .tabla-resultados td {
+    border: 1px solid #cbd5e1;  /* líneas internas */
+    padding: 6px 8px;
+    font-size: 13px;
+}
+
+/* Cabecera */
+.destino-modal .tabla-resultados thead th {
+    background: #e9f1fb;       /* azul muy suave */
+    color: #1a252f;
+    font-weight: 600;
+    text-align: left;
+}
+
+.btn-modal {
+    padding: 4px 10px;
+    font-size: 12px;
+    background-color: #3182d3;
+    color: white;
+    border: 1px solid #2c6cb0;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background-color 0.2s ease, transform 0.05s ease;
+}
+
+.btn-modal:hover {
+    background-color: #2563a8;
+}
+
+.btn-modal:active {
+    transform: scale(0.97);
+}
+
+  .btn-modal[disabled] {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+  
+
+  .modal-cerrar {
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  font-size: 18px;
+  cursor: pointer;
+  color: #555;
+  font-weight: bold;
+}
+
+.modal-cerrar:hover {
+  color: #000;
+}
+
+
+.paginacion {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 10px 0;
+}
+
+/* Botones de paginación uniformes */
+.paginacion .controles {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: nowrap; /* 🔑 clave */
+}
+
+.paginacion .controles span {
+  white-space: nowrap;
+}
+
+
+.paginacion .controles button {
+width: 34px;
+height: 28px;
+padding: 0;
+display: flex;
+align-items: center;
+justify-content: center;
+font-size: 14px;
+}
+
+
+.select-pagina {
+  padding: 4px 8px;
+  margin: 0 6px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+
+.paginacion button {
+  background: #2c3e50;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.paginacion button:hover:not(:disabled) {
+  background: #1a252f;
+}
+
+.paginacion button:disabled {
+  background: #8a8a8a;
+  cursor: default;
+}
+

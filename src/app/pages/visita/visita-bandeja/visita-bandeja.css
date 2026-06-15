@@ -1,0 +1,410 @@
+.visita-programacion {
+    padding: 12px;
+    font-family: Arial, sans-serif;
+}
+
+/* [CHANGE][autor: cormenos@onp.gob.pe][fecha: 2025-12-24 16:07 UTC-5 (Lima)][desc: Estilos para bloque de carga masiva (plantilla/import Excel) en Plan de visitas][obj: visita-bandeja.css] */
+
+/* ----- TÍTULO ----- */
+header {
+    background: #ffffff; /* azul oscuro */
+    color: #000000;
+    padding: 10px;
+    margin-bottom: 10px;
+    text-align: center;   /* Centra el título */
+}
+
+header h1 {
+    font-size: 18px;
+    margin: 0;
+}
+
+/* ----- FILTROS ----- */
+.filtros {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 10px;
+    align-items: flex-end; /* 👈 CLAVE */
+}
+
+.filtros input,
+.filtros select {
+    padding: 4px 8px;
+}
+
+
+/* ----- TABLA O LISTA DE EQUIPOS ----- */
+.tabla-contenedor table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.tabla-contenedor th,
+.tabla-contenedor td {
+    border: 1px solid #ccc;
+    padding: 6px;
+    text-align: left;
+}
+
+.tabla-contenedor th {
+    background: #2c3e50;
+    color: white;
+}
+
+/* Botones */
+.btn-editar {
+    cursor: pointer;
+    padding: 2px 6px;
+    background: #ffffff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+}
+
+/* ----- MODAL DE MENSAJES ----- */
+#modalMensaje {
+    display: none;
+    position: fixed;
+    z-index: 2000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.4);
+    backdrop-filter: blur(2px);
+}
+
+#modalMensajeContenido {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    padding: 20px 40px;
+    border-radius: 8px;
+    font-size: 16px;
+    text-align: center;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+}
+
+#modalMensajeContenido button {
+    margin-top: 15px;
+    padding: 6px 14px;
+    border: none;
+    background: #2c3e50;
+    color: white;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+#modalMensajeContenido button:hover {
+    background: #1a252f;
+}
+
+/* ----- MODAL GENERAL (para formularios, etc.) ----- */
+.modal-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 3000;
+}
+
+.modal-dialog {
+    background: white;
+    padding: 0;
+    border-radius: 8px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    max-width: 1200px;
+    width: 98%;
+}
+
+.modal-dialog-masivo {
+    background: white;
+    padding: 0;
+    border-radius: 8px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    max-width: 1200px;
+    width: 98%;
+}
+
+
+
+/* 📌 NUEVO: BARRA SUPERIOR */
+.barra-superior {
+    display: flex;
+    justify-content: space-between; /* separa paginación y botón Nuevo */
+    align-items: center;
+    margin: 10px 0;
+}
+
+.acciones-import {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+}
+
+.acciones-import input[type='file'] {
+    max-width: 260px;
+}
+
+/* 📌 NUEVO: BOTÓN NUEVO */
+.boton {
+    background-color: #3182d3; /* azul vistoso */
+    color: white;
+    padding: 6px 12px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background-color 0.2s ease;
+  }
+
+.boton:hover {
+    background: #1a252f;
+}
+
+
+.modal-contenido {
+    background: #ffffff;
+    padding: 25px;
+    border-radius: 10px;
+    width: 360px;
+    max-width: 90vw;
+    text-align: center;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.25);
+    animation: modalAnimacion 0.25s ease-out;
+}
+
+.modal-titulo {
+    margin: 0 0 10px;
+    font-size: 20px;
+    font-weight: bold;
+    color: #2c3e50;
+}
+
+.modal-mensaje {
+    font-size: 15px;
+    margin-bottom: 20px;
+    color: #333;
+    white-space: pre-line;
+}
+
+.modal-actions {
+    display: flex;
+    justify-content: center;
+    gap: 20px; /* ← separación entre botones */
+    margin-top: 15px;
+}
+
+.btn-modal {
+    background: #2c3e50;
+    color: white;
+    padding: 10px 22px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.btn-modal:hover {
+    background: #1a252f;
+}
+
+
+
+
+
+/* Para el modal de carga masiva */
+.modal-carga {
+    background: white;
+    padding: 24px 28px;
+    border-radius: 10px;
+    border: 2px solid #ffffff;   /* ⬅ BORDE BLANCO */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25); /* ⬅ sombra más suave */
+    max-width: 580px;
+    width: 96%;
+}
+
+.modal-carga .modal-titulo {
+    background: #2c3e50;
+    color: #ffffff;
+    padding: 6px 14px;          /* ⬅ menos alto */
+    margin: -24px -28px 16px;
+    border-radius: 10px 10px 0 0;
+    text-align: center;
+    font-size: 16px;            /* ⬅ un poco más pequeño */
+    font-weight: 600;
+    line-height: 1.1;           /* ⬅ controla altura vertical */
+}
+
+.modal-carga .modal-mensaje {
+    font-size: 14px;
+    color: #333;
+    margin-bottom: 12px;
+}
+
+.modal-carga input[type="file"] {
+    border: 1px solid #ccc;      /* ⬅ borde visible */
+    padding: 6px;
+    border-radius: 6px;
+    background: #ffffff;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.modal-carga .modal-mensaje {
+    font-size: 14px;
+    color: #333;
+    margin-bottom: 16px;   /* ⬅ separación base entre pasos */
+}
+
+/* Negrita solo para "Paso X:" */
+.modal-carga .modal-mensaje::first-line {
+    font-weight: 700;
+}
+
+.modal-carga .link-descarga {
+    color: #3182d3;          /* mismo azul de los botones */
+    font-weight: 600;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.modal-carga .link-descarga:hover {
+    color: #1a252f;
+}
+
+
+
+
+/* Paginación */
+.paginacion {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+  
+  .paginacion button {
+    background: #2c3e50;
+    color: white;
+    padding: 4px 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .paginacion button:hover:not(:disabled) {
+    background: #1a252f;
+  }
+  
+  .paginacion button:disabled {
+    background: #8a8a8a;
+    cursor: default;
+  }
+
+ 
+
+  /* Botones de paginación uniformes */
+  .paginacion .controles {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: nowrap; /* 🔑 clave */
+  }
+
+  .paginacion .controles span {
+    white-space: nowrap;
+  }
+
+.paginacion .controles button {
+  width: 34px;
+  height: 28px;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+}
+
+
+.resumen-resultados {
+    display: flex;
+    align-items: center;
+  }
+  
+  .acciones-derecha {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 14px; /* 🔹 separación entre "Nuevo" y el grupo */
+  }
+  
+  /* Grupo Plantilla */
+  .grupo-plantilla {
+    display: flex;
+    gap: 6px;
+    padding-left: 12px;
+    border-left: 2px solid #e0e0e0; /* 🔹 separador visual */
+  }
+  
+  /* Opcional: diferenciar jerarquía */
+  .btn-primario {
+    background-color: #3182d3;
+  }
+  
+  .btn-secundario {
+    background-color: #5a8fdc;
+  }
+  
+  .btn-secundario:hover {
+    background-color: #1a252f;
+  }
+  
+
+
+.select-pagina {
+  padding: 4px 8px;
+  margin: 0 6px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+
+
+#modalProcesando {
+    display: none;
+    position: fixed; /* ✅ usar fixed para posicionarse sobre toda la pantalla */
+    z-index: 2000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(2px);
+  }
+  
+  #modalContenido, #modalMensajeContenido {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); /* ✅ centrado vertical y horizontal */
+    background: white;
+    padding: 20px 40px;
+    border-radius: 8px;
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+    text-align: center;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+  }
+
+  

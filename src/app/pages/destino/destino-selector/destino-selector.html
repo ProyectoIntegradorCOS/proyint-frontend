@@ -1,0 +1,154 @@
+<div class="modal-backdrop" *ngIf="abierto">
+    <div class="modal-contenido destino-modal">
+  
+      <span class="modal-cerrar" (click)="cerrar()">✖</span>
+
+      <h3 class="modal-titulo">Buscar destino</h3>
+  
+      <div class="destino-buscar">
+        Destino
+        <input type="text"
+               #txtBuscar
+               style="text-transform: uppercase;"
+               [(ngModel)]="filtroDestino"
+               (keyup.enter)="buscarDestinos()">        
+    
+        Dirección
+        <input type="text"
+               style="text-transform: uppercase;"
+               [(ngModel)]="filtroDireccion"
+               (keyup.enter)="buscarDestinos()">        
+
+        <!--
+        <select [(ngModel)]="ubicabilidad" placeholder="Estado">
+          <option value="">-- Seleccionar estado --</option>
+          <option value="CASO ESPECIAL">CASO ESPECIAL</option>
+          <option value="INUBICABLE">INUBICABLE</option>        
+          <option value="CONFORME">CONFORME</option>
+          <option value="NO CONFORME">NO CONFORME</option>
+        </select>
+        -->
+        
+        <button class="boton" (click)="buscarDestinos()">Buscar</button>
+        <button class="boton" (click)="nuevoDestino()">Nuevo</button>
+        <!-- <button class="boton" (click)="cerrar()">Cerrar</button> -->
+      </div>
+
+      <br/>
+      
+      <!-- Resumen de resultados -->
+      <div class="resumen-resultados">
+
+        @if(totalRegistros == 0) {
+          <span>
+            No se encontraron destinos
+          </span>
+        }
+
+        @if(totalRegistros == 1) {
+          <span>
+            Se encontró 1 destino
+          </span>
+        }
+
+        @if(totalRegistros > 1) {
+        <span>
+          Se encontraron <strong>{{ totalRegistros }}</strong> destinos
+        </span>
+        }
+
+      </div>      
+
+      <div class="tabla-scroll">
+        <table class="tabla-resultados">
+          <thead>
+            <tr>
+              <th>Nombre</th>
+              <th>Dirección</th>
+              <!-- <th>Coordenada</th> -->
+              <th>Ubicabilidad</th>
+              <th>Estado ONP</th>
+              <th>Fe.Actualización</th>
+              <th>Acción</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let d of destinosEncontrados">
+              <td>{{ d.nombre }}</td>
+              <td>{{ d.direccion || '-' }}</td>
+              <!--
+              <td>
+                <span *ngIf="d.latitud != null">
+                  {{ d.latitud }}, {{ d.longitud }}
+                </span>
+                <span *ngIf="d.latitud == null">-</span>
+              </td>
+              -->
+              <td>{{ d.ubicabilidadOnp}}</td>
+              <td>{{ d.estadoOnp}}</td>
+              <td>{{ d.fechaActualizacionOnp | date:'dd/MM/yyyy'}}</td>
+              <td>
+                <button class="btn-modal" (click)="seleccionar(d)">
+                  Seleccionar
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Paginación -->
+      <div class="paginacion">
+        <div class="controles">
+
+          <!-- Primera página -->
+          <button
+            (click)="irPagina(1)"
+            [disabled]="paginaActual === 1"
+            title="Primera página">
+            ⏮
+          </button>
+        
+          <button
+            (click)="irPagina(paginaActual - 1)"
+            [disabled]="paginaActual === 1"
+            title="Anterior">
+            ←
+          </button>
+
+          <span>
+            Página
+            <select
+              [(ngModel)]="paginaActual"
+              (change)="onCambioPagina()"
+              class="select-pagina">
+              <option
+                *ngFor="let p of paginas"
+                [value]="p">
+                {{ p }}
+              </option>
+            </select>
+            de {{ totalPaginas }}
+          </span>
+
+          <button
+            (click)="irPagina(paginaActual + 1)"
+            [disabled]="paginaActual === totalPaginas"
+            title="Siguiente">
+            →
+          </button>
+
+          <!-- Última página -->
+          <button
+            (click)="irPagina(totalPaginas)"
+            [disabled]="paginaActual === totalPaginas"
+            title="Última página">
+            ⏭
+          </button>
+
+        </div>
+      </div>      
+  
+    </div>
+  </div>
+  

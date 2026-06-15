@@ -1,0 +1,97 @@
+<header>
+   <h1>Seguimiento del trabajo de campo</h1>
+</header>
+ 
+<div id="filtros">
+  Equipo:
+  <select [(ngModel)]="equipoSeleccionado" (change)="onEquipoChange()">
+    <option [ngValue]="todosLosEquipos">Todos</option>
+    <option *ngFor="let equipo of listaEquipos" [value]="equipo.id">{{ equipo.nombre }}</option>
+  </select>
+
+  Colaborador:
+  <select id="personas" [(ngModel)]="personaSeleccionada" (change)="onPersonaChange()">
+    <option value="todos">Todos</option>
+    <option *ngFor="let persona of listaPersonas" [value]="persona.idUsuario">{{ persona.usuario }}</option>
+  </select>
+  
+  Fecha: 
+  <input type="date" 
+         [(ngModel)]="fechaSeleccionada" 
+         [max]="fechaMaxima" 
+         (keydown)="bloquearTeclado($event)"
+         (ngModelChange)="onFechaChange($event)">
+
+  <label *ngIf="esFechaActual">
+    <input type="checkbox" [(ngModel)]="actualizacionActiva" (ngModelChange)="onCambioCheckRefresh()" title="Seleccione si desea que los datos se refresquen automáticamente" />
+    Refrescar
+    @if(actualizacionActiva) {
+    <input type="checkbox" [(ngModel)]="ajustarZoom" (ngModelChange)="onCambioCheckZoom()"  title="Seleccione si desea que el zoom se ajuste automáticamente" />
+    AutoZoom
+    }
+  </label>
+
+  <button id="buscar" (click)="buscarDatos()" title="Realiza la búsqueda para el seguimimento">Buscar</button>
+  <!-- <button id="limpiar" (click)="limpiarFiltros()" title="Limpia los filtros de búsqueda">Limpiar</button> -->
+
+</div>
+
+
+<div id="map">
+  <div id="leyenda">
+    
+    <!-- HEADER CON BOTÓN -->
+    <div class="leyenda-header" (click)="toggleLeyenda()">
+      <span class="leyenda-plan-title">LEYENDA</span>
+      <span 
+        class="leyenda-toggle"
+        [title]="leyendaExpandida ? 'Contraer leyenda' : 'Expandir leyenda'">
+        {{ leyendaExpandida ? '▾' : '▸' }}
+      </span>
+    </div>
+
+    <!-- CONTENIDO (SE OCULTA) -->
+    <div *ngIf="leyendaExpandida">
+
+      <div class="leyenda-plan">
+        <div class="leyenda-plan-title">Usuarios:</div>
+        <div class="leyenda-plan-item" *ngFor="let p of personasActivas">
+          <span [style.background]="p.color"></span>{{ p.nombre }}
+        </div>
+      </div>
+
+      <div class="leyenda-plan">
+        <div class="leyenda-plan-title">Estado de la visita:</div>
+        <div class="leyenda-plan-item"><span class="plan-marker plan-pending"></span> Pendiente</div>
+        <div class="leyenda-plan-item"><span class="plan-marker plan-enroute"></span> En ruta</div>
+        <div class="leyenda-plan-item"><span class="plan-marker plan-enplace"></span> En lugar</div>
+        <div class="leyenda-plan-item"><span class="plan-marker plan-invisit"></span> En visita</div>
+        <div class="leyenda-plan-item"><span class="plan-marker plan-done"></span> Completado</div>
+
+        <div class="leyenda-plan-item"><span class="plan-marker plan-start">I</span> Inicio del plan</div>
+        <div class="leyenda-plan-item"><span class="plan-marker plan-start">F</span> Fin del plan</div>
+      </div>
+
+      <div class="leyenda-plan">
+        <div class="leyenda-plan-title">Prioridad:</div>
+        <div class="leyenda-plan-item"><span class="plan-marker plan-priority muy-alta"></span> Muy alta</div>
+        <div class="leyenda-plan-item"><span class="plan-marker plan-priority alta"></span> Alta</div>
+        <div class="leyenda-plan-item"><span class="plan-marker plan-priority normal"></span> Normal</div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div id="modalCarga" [style.display]="mostrarCarga ? 'block' : 'none'">
+  <div id="modalContenido">⏳ Cargando, por favor espere...</div>
+</div>
+
+
+<div id="modalMensaje" [style.display]="mostrarMensaje ? 'block' : 'none'">
+  <div id="modalMensajeContenido">
+    <div id="mensajeTexto">{{ mensajeTexto }}</div>
+    <button (click)="cerrarModalMensaje()">Aceptar</button>
+  </div>
+</div>
+

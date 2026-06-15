@@ -1,0 +1,274 @@
+:host {
+  display: block;
+  margin-top: 15px;
+}
+
+/* Botón Agregar */
+.boton {
+  background-color: #3182d3;
+  color: white;
+  padding: 8px 14px;
+  border: 1px solid #007bff;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 13px;
+  margin-bottom: 10px;
+}
+
+.boton:hover {
+  background: #1a252f;
+}
+
+/* Tabla de preguntas */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+  background: #ffffff;
+  border: 1px solid #dcdcdc;
+}
+
+table tr:nth-child(even) {
+  background: #f6f9fc;
+}
+
+table tr:hover {
+  background: #eef4fb;
+}
+
+/* Celdas */
+
+td {
+  padding: 8px 10px;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+/* Columna orden */
+td:first-child {
+  width: 50px;
+  text-align: center;
+  font-weight: 600;
+  color: #2c3e50;
+}
+
+/* Columna tipo */
+td:nth-child(3) {
+  width: 110px;
+  text-align: center;
+  font-size: 12px;
+  font-weight: 600;
+  color: #555;
+}
+
+/* Columna acciones */
+td:last-child {
+  width: 80px;
+  text-align: center;
+}
+
+/* Botón editar */
+td button {
+  background: #fbffc4;        /* color de fondo de los botones */
+  color: #2c3e50;
+  border: 1px solid #bfc7d1;
+  padding: 3px 7px;
+  border-radius: 4px;
+  font-size: 11px;
+  cursor: pointer;
+}
+
+
+td button:hover {
+  background: #acd2ff;
+}
+
+
+/* Cabecera de la tabla */
+table th {
+  background: #2c3e50;
+  color: #ffffff;
+  padding: 10px;
+  font-weight: 700;
+  font-size: 13px;
+  text-align: left;
+  border-bottom: 2px solid #1a252f;
+}
+
+/* Alinear columnas especiales */
+table th:first-child {
+  text-align: center;
+  width: 50px;
+}
+
+table th:nth-child(3) {
+  text-align: center;
+  width: 110px;
+}
+
+table th:last-child {
+  text-align: center;
+  width: 80px;
+}
+
+
+.orden-col {
+  display: flex;
+  justify-content: center;
+  gap: 6px;              /* espacio entre ▲ y ▼ */
+}
+
+/* Botones de orden */
+.orden-col button {
+  padding: 4px 8px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+/* Apariencia cuando están deshabilitados */
+.orden-col button:disabled {
+  opacity: 0.35;              /* Se ve “apagado” */
+  cursor: default;       /* Cursor bloqueado */
+  background-color: #e0e0e0;  /* Gris */
+  color: #888;
+  border-color: #ccc;
+}
+
+/* Evita hover cuando está deshabilitado */
+.orden-col button:disabled:hover {
+  background-color: #e0e0e0;
+  color: #888;
+}
+
+
+
+/* Subir / bajar */
+.orden-col button {
+  background: #e8f0ff;
+  border-color: #b6ccff;
+  color: #2c4a9a;
+}
+
+/* Editar */
+td:nth-child(5) button {
+  background: #fff3cd;
+  border-color: #ffeeba;
+  color: #856404;
+}
+
+/* Eliminar */
+td:nth-child(6) button {
+  background: #f8d7da;
+  border-color: #f5c6cb;
+  color: #721c24;
+}
+
+
+/* Fondo oscuro */
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+}
+
+/* Caja del modal */
+.modal {
+  background: #fff;
+  padding: 20px 25px;
+  border-radius: 6px;
+  width: 420px;
+  max-width: 90%;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+  animation: modalFade 0.2s ease-out;
+}
+
+.modal h3 {
+  margin-top: 0;
+  color: #573c39;
+}
+
+.modal p {
+  font-size: 14px;
+  color: #444;
+}
+
+/* Botones */
+.modal-botones {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.btn-cancelar {
+  background: #ddd;
+  border: none;
+  padding: 6px 14px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.btn-eliminar {
+  background: #e74c3c;
+  color: white;
+  border: none;
+  padding: 6px 14px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.btn-eliminar:hover {
+  background: #c0392b;
+}
+
+@keyframes modalFade {
+  from {
+    transform: translateY(-10px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+
+
+/* Contenedor de la tabla con altura máxima */
+.tabla-contenedor {
+  max-height: 210px;       /* altura máxima del listado */
+  overflow-y: auto;        /* habilita scroll vertical */
+  margin-top: 10px;
+  border: 1px solid #dcdcdc;
+  border-radius: 6px;
+  background: #fff;
+}
+
+/* Mantener la cabecera visible */
+.tabla-contenedor table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.tabla-contenedor th {
+  position: sticky;
+  top: 0;
+  background-color: #2c3e50;  /* mismo color de cabecera */
+  color: white;
+  z-index: 2;                 /* para que quede sobre las filas */
+}
+
+
+.preguntas-header {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 10px;
+}

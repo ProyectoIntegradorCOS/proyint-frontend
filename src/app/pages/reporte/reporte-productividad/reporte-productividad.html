@@ -1,0 +1,156 @@
+<div class="reporte-container">
+    <h2 class="titulo">Reporte de productividad de las visitas</h2>
+    
+    
+    <!-- Filtros -->
+    <div class="filtros-container">
+        <div class="filtros-grupo">
+            <div>Equipo:</div>
+            <div class="filtro-item">            
+                <select id="equipo" [(ngModel)]="equipoSeleccionado" (change)="onEquipoChange()">
+                    <option [ngValue]="todosLosEquipos">Todos</option>
+                    <option *ngFor="let eq of listaEquipos" [value]="eq.id">{{ eq.nombre }}</option>
+                </select>
+            </div>            
+            
+            <div>Colaborador:</div>
+            <div class="filtro-item">            
+                <select id="personas" [(ngModel)]="personaSeleccionada">
+                    <option value="todos">Todos</option>
+                    <option *ngFor="let persona of listaPersonas" [value]="persona.idUsuario">{{ persona.usuario }}</option>
+                </select>
+            </div>
+            
+            <div>Desde:</div>
+            <div class="filtro-item">
+                <input type="date" id="fechaInicio" [max]="fechaActual" [(ngModel)]="fechaInicioSeleccionada">
+            </div>   
+
+            <div>Hasta:</div>
+            <div class="filtro-item">
+                <input type="date" id="fechaFin" [max]="fechaActual" [(ngModel)]="fechaFinSeleccionada">
+            </div>   
+        </div>     
+        
+        <div class="filtros-accion">
+            <div>
+                <button class="boton" (click)="generarReporte()">Generar reporte</button>
+            </div>
+        </div>
+    </div>
+     
+    
+    <!-- REPORTE -->
+
+    <div class="tabs-container" *ngIf="reporte.length > 0">
+        <button
+            class="tab"
+            [class.activo]="vistaActiva === 'tabla'"
+            (click)="cambiarVista('tabla')">
+            📋 Datos
+        </button>
+
+        <button
+            class="tab"
+            [class.activo]="vistaActiva === 'grafico'"
+            (click)="cambiarVista('grafico')">
+            📊 Gráfico
+        </button>
+    </div>
+
+
+    <!-- Resultados -->
+    <div class="resultados">
+
+        <div *ngIf="vistaActiva === 'tabla'">        
+            <!-- Tabla con scroll -->
+            <div class="tabla-scroll" *ngIf="reporte.length > 0">
+                <table class="tabla-resultados">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Equipo</th>
+                            <th>Colaborador</th>
+                            <th>Fecha</th>
+                            <th>Estado Plan</th>
+                            <th>Visitas planificadas</th>
+                            <th>Visitas completadas</th>
+                            <th>Visitas terminadas</th>
+                            <th>Efectividad</th>
+                            <!-- <th>Detalle</th> -->
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let r of reporte; let i = index">
+                            <td>{{ i + 1 }}</td>
+                            <td>{{ r.equipo }}</td>
+                            <td>{{ r.nombreVerifier }}</td>
+                            <td>{{ r.fechaPlan | date:'dd/MM/yyyy' }}</td>
+                            <td>{{ r.estadoPlan | estadoPlanVisita}}</td>
+                            <!-- <td>{{ r.totalVisitas }}</td> -->
+                            <td>
+                                <a
+                                    href="javascript:void(0)"
+                                    class="link-plan"
+                                    (click)="verPlan(r.idPlan)"
+                                    title="Ver detalle del plan"
+                                >
+                                    {{ r.totalVisitas }}
+                                </a>
+                            </td>
+                            <td>{{ r.completadas }}</td>
+                            <td>{{ r.terminadas }}</td>
+                            <td>{{ (r.completadas > 0 ? (r.terminadas / r.completadas) : 0) | percent:'1.0-1' }}</td>
+                            <!--
+                            <td>
+                                <button class="btn-ver" (click)="verPlan(r.idPlan)" title="Ver">🔎</button>
+                            </td>
+                            -->
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    
+        <!-- GRÁFICO -->
+        <div *ngIf="vistaActiva === 'grafico'">
+            <!-- Gráfico -->
+            <div class="grafico-container" *ngIf="reporte.length > 0">
+                <div class="grafico-wrapper">
+                    <canvas id="graficoBarra"></canvas>
+                </div>
+            </div>
+        </div>
+    
+    </div>
+     
+
+</div>
+
+
+<!-- Modal de procesando -->
+<div id="modalCarga" [style.display]="mostrarCarga ? 'block' : 'none'">
+    <div id="modalContenido">⏳ Cargando, por favor espere...</div>
+</div>
+
+<!-- Modal de mensajes -->
+<div id="modalMensaje" [style.display]="mostrarMensaje ? 'block' : 'none'">
+    <div id="modalMensajeContenido">
+        <div id="mensajeTexto">{{ mensajeTexto }}</div>
+        <button (click)="cerrarModalMensaje()">Aceptar</button>
+    </div>
+</div> 
+
+<div class="modal-backdrop" *ngIf="mostrarModal">
+    <div class="modal-dialog">
+        
+        <visita-form 
+            [equipos]="listaEquipos"
+            [modo]="modoFormulario"
+            [registroEditar]="planSeleccionado"
+            (cerrar)="cerrarModal()"
+            (guardado)="guardarDesdeModal($event)">
+        </visita-form>
+
+    </div>
+</div>

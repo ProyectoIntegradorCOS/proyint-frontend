@@ -1,0 +1,230 @@
+/* -------------------------------------- */
+/* 1. Contenedor principal del formulario */
+/* -------------------------------------- */
+.form-card {
+    width: 100%;
+    background-color: #ffffff;
+    padding: 20px;
+    max-height: 90vh;      /* altura máxima, ajusta el % a tu gusto */
+    overflow-y: auto;      /* scroll interno si el contenido supera el límite */
+}
+
+/* -------------------------------------- */
+/* 2. Encabezado y botón de cierre */
+/* -------------------------------------- */
+.form-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #e0e0e0;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+}
+
+.form-header h2 {
+    margin: 0;
+    font-size: 1.5em; 
+}
+
+.btn-cerrar {
+    background: none;
+    border: none;
+    font-size: 1.2em;
+    cursor: pointer;
+    color: #999;
+}
+
+.btn-cerrar:hover {
+    color: #333;
+}
+
+/* -------------------------------------- */
+/* 3. Grupos de campos */
+/* -------------------------------------- */
+.form-group {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    width: 120px;
+    min-width: 120px;
+    flex-shrink: 0;
+    margin-right: 20px;
+    margin-top: 10px;
+    font-weight: 600;
+    color: #555;
+}
+
+.form-group input,
+.form-group textarea {
+    width: 100%;
+    min-width: 300px; /* asegura un ancho mínimo */
+    max-width: 100%;  /* no excede el contenedor */
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-size: 1em;
+}
+
+.form-group select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-size: 1em;
+}
+
+textarea {
+    resize: vertical;
+    min-height: 80px;
+}
+
+/* Contenedor del input */
+.input-container {
+    flex-grow: 1;
+    max-width: 500px; /* antes estaba 350px, ahora más ancho */
+}
+
+/* Mensajes */
+.error-msg {
+    color: #d9534f;
+    font-size: 0.85em;
+    margin-top: 5px;
+    display: block;
+}
+
+.obligatorios-msg {
+    color: rgb(129, 94, 94);
+    font-size: 0.85em;
+    margin-top: 5px;
+    display: block;
+}
+
+/* -------------------------------------- */
+/* 4. Botones */
+/* -------------------------------------- */
+.form-actions {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    padding-top: 8px;   /* reducido desde 20px */
+    border-top: none;   /* elimina la línea divisoria */
+    margin-top: 8px;    /* reducido desde 20px */
+}
+
+.boton {
+    background-color: #3182d3;
+    color: white;
+    padding: 10px 15px;
+    border: 1px solid #007bff;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background-color 0.2s ease;
+}
+
+.boton:hover {
+    background: #1a252f;
+}
+
+.boton:disabled {
+    background-color: #b5b5b5 !important;
+    border-color: #999 !important;
+    color: #eee !important;
+    cursor: not-allowed !important;
+    opacity: 0.7;
+}
+
+/* ====================================== */
+/*             MODALES                     */
+/* ====================================== */
+
+.modal-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0,0,0,0.55);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+.modal-contenido {
+    background: #ffffff;
+    padding: 25px;
+    border-radius: 10px;
+    width: 360px;
+    max-width: 90vw;
+    text-align: center;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.25);
+    animation: modalAnimacion 0.25s ease-out;
+}
+
+.modal-titulo {
+    margin: 0 0 10px;
+    font-size: 20px;
+    font-weight: bold;
+    color: #2c3e50;
+}
+
+.modal-mensaje {
+    font-size: 15px;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.modal-actions {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 15px;
+}
+
+@keyframes modalAnimacion {
+    from {
+        opacity: 0;
+        transform: scale(0.85);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+
+.modal-titulo-principal {
+  margin: 0;
+  text-align: center;
+  background: #2c3e50;
+  color: #ffffff;
+  padding: 5px 8px;
+  border-radius: 4px;
+  font-size: 16px;
+  font-family: Arial;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+
+.btn-cerrar {
+  position: absolute;
+  top: 6px;
+  right: 8px;
+  background: transparent;
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+  color: white; /* para que contraste con el fondo */
+}
+
+.form-group textarea {
+  min-height: 60px;  /* ajusta a tu gusto */
+  height: 60px;      /* alto inicial */
+}

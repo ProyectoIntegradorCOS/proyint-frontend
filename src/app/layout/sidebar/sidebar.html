@@ -1,0 +1,46 @@
+<nav class="sidebar">
+
+  <ul class="menu-list">
+    <li *ngFor="let item of menu" class="menu-item">
+      <!-- 🔹 Si el ítem NO tiene hijos: enlace directo -->
+      <a
+        *ngIf="!item.children?.length"
+        [routerLink]="item.route"
+        routerLinkActive="active"
+        class="menu-link"
+      >
+        {{ item.label }}
+      </a>
+
+      <!-- 🔹 Si el ítem TIENE hijos: título + submenú -->
+      <div *ngIf="item.children?.length" class="menu-group">
+        <span class="menu-title">{{ item.label }}</span>
+
+        <ul class="submenu-list">
+          <li *ngFor="let child of item.children" class="submenu-item">
+            <a
+              [routerLink]="child.route"
+              routerLinkActive="active"
+              class="submenu-link"
+            >
+              {{ child.label }}
+            </a>
+
+            <!-- 🧩 Soporte para subniveles adicionales -->
+            <ul *ngIf="child.children?.length" class="sub-submenu-list">
+              <li *ngFor="let subchild of child.children" class="sub-submenu-item">
+                <a
+                  [routerLink]="subchild.route"
+                  routerLinkActive="active"
+                  class="sub-submenu-link"
+                >
+                  {{ subchild.label }}
+                </a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </li>
+  </ul>
+</nav>

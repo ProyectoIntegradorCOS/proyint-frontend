@@ -1,0 +1,106 @@
+/* ========================================================= */
+/* 1. Estilo del Contenedor Principal (topbar) - SIN CAMBIOS */
+/* ========================================================= */
+.topbar {
+  display: grid;
+  grid-template-columns: 1fr 2fr 1fr;
+  align-items: center;
+  background-image: url('/fondo.png');
+  height: 70px;
+  padding: 0 20px;
+  color: #ffffff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+/* ---- IZQUIERDA ---- */
+.topbar-left {
+  display: flex;
+  align-items: center;
+}
+
+.logo {
+  height: 70px;
+}
+
+.usuario {
+  height: 20px;
+}
+
+/* ---- CENTRO ---- */
+.topbar-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+}
+
+.date {
+  position: absolute;
+  left: -180px; 
+  top: 20px;
+  font-size: 0.9rem;
+  color: #d0d0d0;
+}
+
+.app-name {
+  font-size: 1.9rem;
+  font-weight: bold;
+  color: #ffffff;
+  letter-spacing: 1px;
+}
+
+/* ---- DERECHA ---- */
+.topbar-right {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 20px; /* separa el botón del usuario */
+}
+
+.btn-logout {
+  /* Fondo rojo oscuro */
+  background-color: #a41c2c; 
+  color: #ffffff;
+  
+  /* 💡 CAMBIO CLAVE: Borde blanco de 2px para que se note */
+  border: 2px solid #ffffff; 
+  
+  border-radius: 6px;
+  padding: 8px 14px;
+  cursor: pointer;
+  transition: background-color 0.2s, transform 0.1s, border-color 0.2s;
+}
+
+.btn-logout:hover {
+  /* Fondo aún más oscuro */
+  background-color: #8c1926; 
+  transform: scale(1.05);
+  
+  /* Opcional: Cambiar el borde a un color más brillante para el hover */
+  border-color: #ffcccc; 
+}
+
+.user-name {
+  max-width: 180px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  display: inline-block;
+  vertical-align: middle;
+}
+.text-muted {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+
+.topbar-right .user-info {
+  display: flex;
+  flex-direction: column; 
+  align-items: center; 
+  gap: 2px; 
+}
+
+.topbar-right .usuario {
+  width: 25px; 
+  height: 30px;
+}

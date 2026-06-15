@@ -1,0 +1,281 @@
+<div class="colaborador-bandeja">
+
+    <!-- Título -->
+    <header>
+      <h1>Colaboradores de campo</h1>
+    </header>
+  
+    <!-- Filtros de búsqueda -->
+     
+    <div class="filtros">
+
+
+      Equipo:
+      <select [(ngModel)]="filtros.equipoId">
+        <option [ngValue]="null">Todos</option>
+        @for (equipo of equipos; track equipo.id) {
+            <option [ngValue]="equipo.id">{{ equipo.nombre }}</option>
+        }
+      </select>
+
+
+      Colaborador:
+      <input type="text" 
+             placeholder="Nombre" 
+             [(ngModel)]="filtros.nombre" 
+             style="text-transform: uppercase;"
+             (keyup.enter)="buscar()">
+
+      <button class="boton" (click)="buscar()" title="Realiza la búsqueda de colaboradores">Buscar</button>
+      <!-- <button class="boton" (click)="limpiarFiltros()" title="Limpia los filtros de búsqueda">Limpiar</button> -->
+
+      <!-- <button class="boton" (click)="nuevoColaborador()">Nuevo</button> -->
+    </div>
+
+
+    <br/>
+  
+    <!-- Resumen de resultados -->
+    <div class="resumen-resultados">
+      @if(totalRegistros == 0) {
+        <span>
+          No se encontraron colaboradores
+        </span>
+      }
+
+      @if(totalRegistros == 1) {
+        <span>
+          Se encontró 1 colaborador
+        </span>
+      }
+
+      @if(totalRegistros > 1) {
+      <span>
+        Se encontraron <strong>{{ totalRegistros }}</strong> colaboradores
+      </span>
+      }
+    </div> 
+
+    <br/>
+
+      
+    <!-- Tabla de resultados -->
+    <div class="tabla-contenedor">
+      <table>
+        <thead>
+          <tr>
+            <th>#</th>                        
+            <th>Colaborador</th>
+            <th>Equipo</th>
+            <th>Usuario</th>
+            <th>Horario</th>            
+            <!-- <th>Estado</th> -->
+            @if (mostrarEditar) {
+            <th>Editar</th>
+            }
+          </tr>
+        </thead>
+        <tbody>
+
+          @for (c of colaboradores; let i = $index; track $index) {
+            <tr>
+              <td>{{ ((paginaActual - 1) * tamanioPagina) + i + 1 }}</td>              
+              <td>{{ c.nombre }}</td>
+              <td>{{ c.equipoNombre }}</td>
+              <td>{{ c.usuario }}</td>
+              <td>{{c.horarioNombre}}</td>
+              <!-- <td>{{ c.estadoDescripcion }}</td> -->
+              @if (mostrarEditar) {
+              <td>
+                <button class="btn-editar" (click)="editar(c)" title="Editar">✏️</button>
+              </td>
+            }
+            </tr>
+          }
+
+        </tbody>
+      </table>
+    </div>
+  
+    <br/>
+
+
+    <!-- Paginación -->
+    <div class="paginacion">
+      <div class="controles">
+    
+        <!-- Primera página -->
+        <button
+          (click)="irPagina(1)"
+          [disabled]="paginaActual === 1"
+          title="Primera página">
+          ⏮
+        </button>
+      
+        <button
+          (click)="irPagina(paginaActual - 1)"
+          [disabled]="paginaActual === 1"
+          title="Anterior">
+          ←
+        </button>
+    
+        <span>
+          Página
+          <select
+            [(ngModel)]="paginaActual"
+            (change)="onCambioPagina()"
+            class="select-pagina">
+            <option
+              *ngFor="let p of paginas"
+              [value]="p">
+              {{ p }}
+            </option>
+          </select>
+          de {{ totalPaginas }}
+        </span>
+    
+        <button
+          (click)="irPagina(paginaActual + 1)"
+          [disabled]="paginaActual === totalPaginas"
+          title="Siguiente">
+          →
+        </button>
+
+        <!-- Última página -->
+        <button
+          (click)="irPagina(totalPaginas)"
+          [disabled]="paginaActual === totalPaginas"
+          title="Última página">
+          ⏭
+        </button>
+    
+      </div>
+    </div>
+
+
+    <!-- Modal de procesando -->
+    <div id="modalCarga" [style.display]="mostrarCarga ? 'block' : 'none'">
+      <div id="modalContenido">⏳ Cargando, por favor espere...</div>
+    </div>
+
+    <!-- Modal de mensajes -->
+    <div id="modalMensaje" [style.display]="mostrarMensaje ? 'block' : 'none'">
+      <div id="modalMensajeContenido">
+        <div id="mensajeTexto">{{ mensajeTexto }}</div>
+        <button (click)="cerrarModalMensaje()">Aceptar</button>
+      </div>
+    </div>
+  
+    @if (mostrarModalForm) {
+    <div class="modal-backdrop">
+          <div class="modal-dialog" (click)="$event.stopPropagation()">
+              <app-colaborador-form
+                  [colaboradorData]="colaboradorAEditar"             
+                  (cerrarForm)="cerrarModalForm($event)">
+              </app-colaborador-form>
+          </div>
+    </div>
+    }
+
+
+
+  <!-- Modal para la sinxronización -->
+
+  <div class="modal-backdrop" *ngIf="mostrarModalDatosSincronizacionDetalle">
+    <div class="modal-contenido modal-lg">
+      <h3 class="modal-titulo">
+        ✍️ Completar datos
+      </h3>
+  
+      <p class="modal-mensaje">
+        Por favor, complete los datos
+        {{ usuariosASincronizar.length === 1 ? ' del colaborador indicado' : ' de los colaboradores indicados' }}
+        a continuación:
+      </p>
+  
+      <div class="tabla-detalle">
+        <table>
+          <thead>
+            <tr>
+              <th>Colaborador</th>
+              <th>Usuario</th>              
+              <!-- <th>Perfil SAA</th> -->
+              <th>Tipo de usuario</th>              
+              <th>Horario (*)</th>
+              <th>Equipo (*)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let usuario of usuariosASincronizar">
+              <td>{{ usuario.nombreCompleto }}</td>
+              <td>{{ usuario.login }}</td>              
+              <!-- <td>{{ usuario.nombrePerfil }}</td> -->
+              <td [ngClass]="{'nuevo': usuario.tipo === 'NUEVO', 'reactivar': usuario.tipo === 'REACTIVAR'}">
+                {{ usuario.tipo === 'NUEVO' ? 'Nuevo' : 'Reactivado' }}
+              </td> 
+              <td>
+                <select 
+                  [(ngModel)]="usuario.idHorario"                  
+                >
+                  <option [ngValue]="null">-- Seleccionar Horario --</option>
+                  <option *ngFor="let hor of horarios" [ngValue]="hor.id">{{ hor.nombre }}</option>
+                </select>
+              </td>              
+              <td>
+                <select 
+                  [(ngModel)]="usuario.idEquipo"                                    
+                >
+                  <option [ngValue]="null">-- Seleccionar Equipo --</option>
+                  <option *ngFor="let eq of equipos" [ngValue]="eq.id">{{ eq.nombre }}</option>
+                </select>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <br />
+      <div class="nota">(*) : Campo obligatorio.</div>
+  
+      <div class="modal-actions mt-20">
+        <button 
+          class="btn-modal btn-aceptar" 
+          (click)="validarDatosSincronizacion()" >
+          Guardar
+        </button>
+  
+        <button class="btn-modal btn-cancelar" (click)="cerrarModalEditarDatosSincronizacion()">
+          Cancelar
+        </button>
+      </div>
+    </div>
+  </div>
+
+  
+  <!-- MODAL DE CONFIRMACION DE LA SINCRONIZACION -->
+  <div class="modal-backdrop" *ngIf="mostrarModalConfirmaSincronizacion">
+    <div class="modal-contenido">
+        <h3 class="modal-titulo">
+            Confirmación
+        </h3>
+
+        <p class="modal-mensaje">
+            ¿Desea guardar los datos?
+        </p>
+
+        <div class="modal-actions">
+            <button class="btn-modal btn-aceptar" (click)="guardarDatosSincronizacion()">
+                Aceptar
+            </button>
+
+            <button class="btn-modal btn-cancelar" (click)="cerrarModalConfirmaSincronizacion()">
+                Cancelar
+            </button>
+        </div>
+    </div>
+  </div>
+
+  </div>
+  
+
+  

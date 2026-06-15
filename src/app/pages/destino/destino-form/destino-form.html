@@ -1,0 +1,197 @@
+<div class="modal-principal"></div>
+
+<div class="modal">
+  <h2>{{ modo === 'registro' ? 'Registrar Destino' : 'Editar Destino' }}</h2>
+
+  <form #formDestino="ngForm">
+    <div class="form-row form-row-nombre">
+      <label>Nombre (*)</label>
+      <input type="text" 
+             name="nombre" 
+             class="input-nombre" 
+             maxlength="200" 
+             [(ngModel)]="destino.nombre" 
+             style="text-transform: uppercase;" 
+             [disabled]="!(modo === 'registro' || mostrarEditar)" />
+    </div>
+
+    <!--
+    <div class="form-row">
+      <label>Categoría</label>
+      <select name="categoria" [(ngModel)]="destino.categoria">
+        <option value="">-- Seleccione --</option>
+        <option *ngFor="let c of categorias" [ngValue]="c">{{ c }}</option>
+      </select>
+    </div>
+    -->
+
+
+    <div class="form-row">
+      <label>Dirección (*)</label>
+      <div class="direccion-row">
+        <input type="text" 
+               name="direccion" 
+               maxlength="400" 
+               [(ngModel)]="destino.direccion" 
+               style="text-transform: uppercase;" 
+               [disabled]="!(modo === 'registro' || mostrarEditar)" />
+        @if(modo === 'registro' || mostrarEditar) {
+        <button type="button" class="btn-buscar" (click)="buscarDireccion()">Buscar dirección</button>
+        }
+      </div>
+      @if(modo === 'registro' || mostrarEditar) {
+      <div class="hint" *ngIf="suggestedLabel">Sugerencia: {{ suggestedLabel | uppercase }}</div>
+      }
+    </div>
+
+    <div class="form-row">
+      <label>Ubicabilidad</label>
+      <select name="ubicabilidad" [(ngModel)]="destino.ubicabilidadOnp" class="campo-corto">
+        <option value="">-- Seleccione --</option>
+        <option value="UBICABLE">UBICABLE</option>
+        <option value="INUBICABLE">INUBICABLE</option>        
+        <option value="NO DETERMINADO">NO DETERMINADO</option>
+      </select>
+    </div>
+ 
+    <div class="form-row">
+      <label>Estado ONP</label>
+      <select name="estado" [(ngModel)]="destino.estadoOnp" class="campo-corto">
+        <option value="">-- Seleccione --</option>
+        <option value="CASO ESPECIAL">CASO ESPECIAL</option>
+        <option value="INUBICABLE">INUBICABLE</option>        
+        <option value="CONFORME">CONFORME</option>
+        <option value="NO CONFORME">NO CONFORME</option>
+      </select>
+    </div>
+
+    <div class="form-row">
+        <label>Fecha actualización:</label>
+        <input name="fecha"
+            type="date"
+            [(ngModel)]="destino.fechaActualizacionOnp"
+            class="campo-corto"
+            [max]="fechaActual"
+        >
+    </div>
+
+    <!--
+    <div class="form-row grid-3">
+      <div>
+        <label>Departamento</label>
+        <input type="text" name="departamento" maxlength="100" [(ngModel)]="destino.departamento" />
+      </div>
+      <div>
+        <label>Provincia</label>
+        <input type="text" name="provincia" maxlength="100" [(ngModel)]="destino.provincia" />
+      </div>
+      <div>
+        <label>Distrito</label>
+        <input type="text" name="distrito" maxlength="100" [(ngModel)]="destino.distrito" />
+      </div>
+    </div>
+    -->
+
+    <!--
+    <div class="form-row">
+      <label>Referencia</label>
+      <input type="text" name="referencia" maxlength="400" [(ngModel)]="destino.referencia" />
+    </div>
+    -->
+    
+    
+    <div id="destino-map" class="map"></div>
+
+    <div class="form-row form-row-precision">
+      <label>Precisión</label>
+      <div class="readonly">{{ destino.precision || 'APROXIMADO' }}</div>
+
+      @if(modo === 'registro' || mostrarEditar) {
+      <div class="hint">Tip: clic en el mapa para fijar el pin (marca como CONFIRMADO).</div>
+      }
+    </div>
+    
+
+      <!--
+      <div>
+        <label>Estado</label>
+        <select name="activo" [(ngModel)]="destino.activo">
+          <option [ngValue]="true">Activo</option>
+          <option [ngValue]="false">Inactivo</option>
+        </select>
+      </div>
+      -->
+
+    <!--
+    <div class="form-row">
+      <label>Contacto</label>
+      <input type="text" name="contacto" maxlength="400" [(ngModel)]="destino.contacto" />
+    </div>
+
+    <div class="form-row">
+      <label>Horarios</label>
+      <input type="text" name="horarios" maxlength="400" [(ngModel)]="destino.horarios" />
+    </div>
+    -->
+
+    
+    <span class="obligatorios-msg">(*): Campos obligatorios</span>
+
+    <div class="acciones">
+      @if(modo === 'registro' || mostrarEditar) {
+      <button type="button" (click)="validarYConfirmar()">Guardar</button>
+      }
+      <button type="button" class="cancelar" (click)="cerrar()">Cancelar</button>
+    </div>
+  </form>
+</div>
+
+<div class="modal-backdrop" *ngIf="mostrarModalConfirmSinCambioDireccion">
+  <div class="modal-contenido">
+    <h3 class="modal-titulo">Confirmación</h3>
+    <p class="modal-mensaje">¿Desea guardar los datos?</p>
+    <div class="modal-actions">
+      <button class="boton" (click)="aceptarGuardarSinCambioDireccion()">Aceptar</button>
+      <button class="boton" (click)="cancelarGuardarSinCambioDireccion()">Cancelar</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-backdrop" *ngIf="mostrarModalConfirmConCambioDireccion">
+  <div class="modal-contenido">
+    <h3 class="modal-titulo">Confirmación</h3>
+    <p class="modal-mensaje">Ha cambiado la ubicación
+                             <img src="marker-icon.png" class="icono-mapa">
+                             en el mapa, ¿Desea cambiar también la dirección actual por la dirección sugerida?
+                             <br/> <br/>
+                             <Strong>Dirección actual:</Strong> {{this.destino.direccion}}
+                             <br/> <br/>
+                             <Strong>Dirección sugerida:</Strong> {{this.suggestedLabel | uppercase}}
+    </p>
+    <div class="modal-actions">
+      <button class="boton" (click)="aceptarGuardarConCambioDireccionSi()">Sí</button>
+      <button class="boton" (click)="aceptarGuardarConCambioDireccionNo()">No</button>
+      <button class="boton" (click)="cancelarGuardarConCambioDireccion()">Cancelar</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-backdrop" *ngIf="mostrarExito">
+  <div class="modal-contenido">
+    <h3 class="modal-titulo">Mensaje</h3>
+    <p class="modal-mensaje">Operación realizada correctamente.</p>
+    <div class="modal-actions">
+      <button class="boton" (click)="cerrarModalExito()">Aceptar</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-backdrop" *ngIf="mostrarMensaje">
+  <div class="modal-contenido">
+    <h3 class="modal-titulo">Mensaje</h3>
+    <p class="modal-mensaje">{{ mensajeTexto }}</p>
+    <div class="modal-actions">
+      <button class="btn-modal" (click)="cerrarModalMensaje()">Aceptar</button>
+    </div>
+  </div>
+</div>
