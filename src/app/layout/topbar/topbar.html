@@ -1,0 +1,37 @@
+<header class="topbar">
+  <!-- 🟦 Izquierda: logo -->
+  <div class="topbar-left">
+    <img src="logo2.png" alt="Logo de Thaqhiri" class="logo" />
+  </div>
+
+  <!-- 🟨 Centro: fecha y nombre del sistema -->
+  <div class="topbar-center">
+    <div class="date">{{ fecha }}</div>
+    <div class="app-name">{{ appName }}</div>
+  </div>
+
+  <!-- 🟩 Derecha: nombre del usuario y botón cerrar sesión -->
+  <div class="topbar-right">    
+    <div class="user-info" *ngIf="nombreUsuario; else sinUsuario">            
+      <img src="usuario.png" class="usuario" />
+      <span class="user-name">{{ nombreUsuario }}</span>
+    </div>
+
+    <!-- Si no hay usuario logueado -->
+    <ng-template #sinUsuario>
+      <div class="user-info">
+        <span class="user-icon">👤</span>
+        <span class="user-name text-muted">Invitado</span>
+      </div>
+    </ng-template>
+
+    <button
+      class="btn-logout"
+      type="button"
+      (click)="logout()"
+      title="Cerrar sesión"
+    >
+      🔒 Cerrar sesión
+    </button>
+  </div>
+</header>

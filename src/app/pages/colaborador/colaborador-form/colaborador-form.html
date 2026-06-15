@@ -1,0 +1,144 @@
+<div class="form-card" (click)="$event.stopPropagation()">
+    <header class="form-header">
+        <h2 class="modal-titulo-principal">{{ modoEdicion ? 'Editar Colaborador' : 'Registrar Colaborador' }}</h2>
+    </header>
+
+    <form [formGroup]="colaboradorForm">
+
+        <div class="form-group">
+            <label for="usuario">Usuario</label>
+            <div class="input-container input-btn">
+                <input id="usuario" type="text" formControlName="usuario" readonly maxlength="30" style="text-transform: uppercase;" class="input-small" #usuarioInput>                
+                <!-- 
+                <button type="button" class="btn-accion" (click)="validarBusquedaUsuarioSaa()">
+                    Buscar
+                </button>                                
+                -->
+                @if (colaboradorForm.get('usuario')?.touched && colaboradorForm.get('usuario')?.errors?.['required']) {
+                    <span class="error-msg">El usuario es obligatorio.</span>
+                }            
+            </div>                            
+        </div>
+        
+        <div class="form-group">
+            <label for="nombre">Nombre</label>
+            <div class="input-container">
+                <input id="nombre" type="text" formControlName="nombre" readonly>
+                @if (colaboradorForm.get('nombre')?.touched && colaboradorForm.get('nombre')?.errors?.['required']) {
+                    <span class="error-msg">El nombre es obligatorio.</span>
+                }
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="horario">Horario (*)</label>
+            <div class="input-container">
+            <select id="horario" formControlName="horarioId">
+                <option [ngValue]="null">-- Seleccionar horario --</option>
+                <option *ngFor="let h of horarios" [ngValue]="h.id">{{ h.nombre }}</option>
+            </select>
+            @if (colaboradorForm.get('horarioId')?.touched && colaboradorForm.get('horarioId')?.errors?.['required']) {
+                <span class="error-msg">El horario es obligatorio.</span>
+            }
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="equipo">Equipo</label>
+            <div class="input-container">
+            <select id="equipo" formControlName="equipoId">
+                <option [ngValue]="null">-- Seleccionar equipo --</option>
+                <option *ngFor="let eq of equipos" [ngValue]="eq.id">{{ eq.nombre }}</option>
+            </select>
+            </div>
+        </div>
+
+        
+        @if (modoEdicion) {
+        <!--
+        <div class="form-group">
+            <label for="estado">Estado (*)</label>
+            <div class="input-container">
+              <select id="estado" formControlName="estado">
+                <option [ngValue]="1">Activo</option>
+                <option [ngValue]="0">Inactivo</option>
+              </select>
+            </div>
+        </div>
+        -->
+        }
+        
+        <span class="obligatorios-msg">(*) : Campo obligatorio.</span>
+
+        <div class="form-actions">
+            <button type="button" [disabled]="colaboradorForm.invalid" class="boton" (click)="confirmarGuardar()">
+                {{ modoEdicion ? 'Actualizar' : 'Registrar' }}
+            </button>
+            <button type="button" class="boton" (click)="cancelar()">Cancelar</button>
+        </div>
+
+    </form>
+</div>
+
+<!-- MODAL DE CONFIRMACION -->
+<div class="modal-backdrop" *ngIf="mostrarModalConfirmacion">
+    <div class="modal-contenido">
+        <h3 class="modal-titulo">
+            Confirmación
+        </h3>
+
+        <p class="modal-mensaje">
+            ¿Desea guardar los datos?
+        </p>
+
+        <div class="modal-actions">
+            <button class="boton" (click)="aceptarGuardar()">
+                Aceptar
+            </button>
+
+            <button class="boton" (click)="cancelarGuardar()">
+                Cancelar
+            </button>
+        </div>
+    </div>
+</div>
+
+
+<!-- MODAL DE MENSAJE -->
+<div class="modal-backdrop" *ngIf="mostrarModalMensaje">
+    <div class="modal-contenido">
+        <h3 class="modal-titulo">
+            Mensaje
+        </h3>
+
+        <p class="modal-mensaje">
+            {{mensajeModal}}
+        </p>
+
+        <div class="modal-actions">
+            <button class="boton" (click)="cerrarMensajeModal()">
+                Aceptar
+            </button>
+        </div>
+    </div>
+</div>
+
+
+<!-- MODAL DE EXITO -->
+<div class="modal-backdrop" *ngIf="mostrarModalResultado">
+    <div class="modal-contenido">
+        <h3 class="modal-titulo">
+            Mensaje
+        </h3>
+
+        <p class="modal-mensaje">
+            {{mensajeResultado}}
+        </p>
+
+        <div class="modal-actions">
+            <button class="boton" (click)="cerrarModalMensajeResultado()">
+                Aceptar
+            </button>
+        </div>
+    </div>
+</div>

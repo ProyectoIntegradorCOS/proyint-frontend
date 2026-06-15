@@ -1,0 +1,378 @@
+.bandeja-destino {
+  padding: 20px;
+  font-family: Arial;
+}
+
+header h1 {
+  margin-top: 0;
+  text-align: center;
+  background: none;
+  color: #2c3e50;
+  padding: 10px 0;
+  border-radius: 0;
+  font-size: 18px;
+  font-weight: 700;
+  border-bottom: none;   /* ⬅ quita la línea */
+}
+
+.filtros {
+  display: grid;
+  grid-template-columns: 
+    80px 300px   /* Destino */
+    80px 300px   /* Direccion */
+    auto;        /* Botón */
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 12px;
+  width: fit-content;
+  max-width: 100%;
+}
+
+.importar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+  padding: 10px;
+  border: 1px solid #eee;
+  border-radius: 6px;
+  background: #fafafa;
+}
+
+.importar-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.importar-check {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: #444;
+}
+
+.importar-actions {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.filtros input,
+.filtros select {
+  padding: 6px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.boton {
+  background-color: #3182d3; /* azul vistoso */
+  color: white;
+  padding: 6px 12px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background-color 0.2s ease;
+}
+
+.boton:hover {
+  background: #1a252f;
+}
+
+.paginacion {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 10px 0;
+}
+
+.tabla-contenedor {
+  margin-top: 10px;
+}
+
+
+.tabla-contenedor table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.tabla-contenedor th,
+.tabla-contenedor td {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+.tabla-contenedor th {
+  background: #2c3e50;
+  color: white;
+  cursor: pointer;
+}
+
+.icono-editar,
+.icono-eliminar {
+  cursor: pointer;
+}
+
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 3000;
+}
+
+.modal-contenido {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  max-height: 90vh;
+  overflow-y: auto;
+  min-width: 350px;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  padding-top: 15px;
+  border-top: 1px solid #eee;
+}
+
+.btn-modal {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+/* [CHANGE][autor: cormenos@onp.gob.pe][fecha: 2025-12-24 17:05 UTC-5 (Lima)][desc: Estilos básicos para modal de carga masiva interna][obj: destino-bandeja.css] */
+.modal-masiva {
+  width: min(1200px, 95vw);
+  max-height: 85vh;
+  overflow: auto;
+}
+
+.modal-masiva .tabla-contenedor table input,
+.modal-masiva textarea {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.modal-masiva textarea {
+  resize: vertical;
+}
+
+.modal-masiva .pegado {
+  margin: 8px 0 12px 0;
+}
+
+/* [CHANGE][autor: cormenos@onp.gob.pe][fecha: 2025-12-24 17:25 UTC-5 (Lima)][desc: Estilos tipo Excel para grilla de carga masiva interna][obj: destino-bandeja.css] */
+.modal-masiva .excel-toolbar {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+}
+
+.modal-masiva .tabla-contenedor {
+  position: relative;
+  border: 1px solid #d0d0d0;
+  border-radius: 6px;
+  overflow: auto;
+  max-height: 45vh;
+  background: #fff;
+}
+
+.modal-masiva .excel-grid {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+  font-size: 13px;
+}
+
+.modal-masiva .excel-grid th,
+.modal-masiva .excel-grid td {
+  border: 1px solid #e0e0e0;
+  padding: 0;
+}
+
+.modal-masiva .excel-grid thead th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background: #f3f3f3;
+  color: #333;
+  font-weight: 700;
+  padding: 8px 6px;
+}
+
+.modal-masiva .excel-grid tbody tr:nth-child(even) {
+  background: #fcfcfc;
+}
+
+.modal-masiva .excel-grid .col-num,
+.modal-masiva .excel-grid .row-num {
+  width: 44px;
+  text-align: right;
+  padding: 8px 8px;
+  background: #f8f8f8;
+  color: #555;
+  font-variant-numeric: tabular-nums;
+}
+
+.modal-masiva .excel-grid .col-actions {
+  width: 44px;
+  text-align: center;
+  background: #fff;
+}
+
+.modal-masiva .excel-cell {
+  display: block;
+  width: 100%;
+  padding: 8px 6px;
+  border: 0;
+  outline: none;
+  background: transparent;
+  font-size: 13px;
+}
+
+.modal-masiva .excel-cell:focus {
+  background: #fff;
+  box-shadow: inset 0 0 0 2px #2aa54c;
+}
+
+.modal-masiva .btn-icon {
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 4px;
+}
+
+.modal-masiva .btn-icon:hover {
+  background: #f1f1f1;
+}
+
+
+.resumen-resultados {
+  display: flex;
+  align-items: center;
+}
+
+.acciones-derecha {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 14px; /* 🔹 separación entre "Nuevo" y el grupo */
+}
+
+
+
+/* Para el modal de carga masiva */
+.modal-carga {
+  background: white;
+  padding: 24px 28px;
+  border-radius: 10px;
+  border: 2px solid #ffffff;   /* ⬅ BORDE BLANCO */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25); /* ⬅ sombra más suave */
+  max-width: 580px;
+  width: 96%;
+}
+
+.modal-carga .modal-titulo {
+  background: #2c3e50;
+  color: #ffffff;
+  padding: 6px 14px;          /* ⬅ menos alto */
+  margin: -24px -28px 16px;
+  border-radius: 10px 10px 0 0;
+  text-align: center;
+  font-size: 16px;            /* ⬅ un poco más pequeño */
+  font-weight: 600;
+  line-height: 1.1;           /* ⬅ controla altura vertical */
+}
+
+.modal-carga .modal-mensaje {
+  font-size: 14px;
+  color: #333;
+  margin-bottom: 12px;
+}
+
+.modal-carga input[type="file"] {
+  border: 1px solid #ccc;      /* ⬅ borde visible */
+  padding: 6px;
+  border-radius: 6px;
+  background: #ffffff;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.modal-carga input[type="file"] {
+  margin-bottom: 14px;   /* 👈 separación visual */
+}
+
+.modal-backdrop.superior {
+  z-index: 4000;
+}
+
+
+
+
+/* Botones de paginación uniformes */
+.paginacion .controles {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: nowrap; /* 🔑 clave */
+}
+
+.paginacion .controles span {
+  white-space: nowrap;
+}
+
+
+.paginacion .controles button {
+width: 34px;
+height: 28px;
+padding: 0;
+display: flex;
+align-items: center;
+justify-content: center;
+font-size: 14px;
+}
+
+
+.select-pagina {
+  padding: 4px 8px;
+  margin: 0 6px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+
+.paginacion button {
+  background: #2c3e50;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.paginacion button:hover:not(:disabled) {
+  background: #1a252f;
+}
+
+.paginacion button:disabled {
+  background: #8a8a8a;
+  cursor: default;
+}

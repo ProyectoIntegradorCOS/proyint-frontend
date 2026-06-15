@@ -1,0 +1,70 @@
+/* ------------------------------------------- */
+/* 1. Backdrop (Fondo Oscuro) */
+/* ------------------------------------------- */
+.modal-backdrop-global {
+    /* Fija la posición en la ventana (Viewport) */
+    position: fixed; 
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    
+    /* Fondo semi-transparente y oscuro */
+    background-color: rgba(0, 0, 0, 0.6);;
+    
+    /* Asegura que esté por encima de todos los demás elementos de la aplicación */
+    z-index: 1050; 
+    
+    /* Centra el contenido (modal-content-global) */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* ------------------------------------------- */
+/* 2. Contenido del Mensaje (El cuadro) */
+/* ------------------------------------------- */
+.modal-content-global {
+    background-color: #ffffff;    
+    padding: 20px;    
+    border-radius: 4px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+    max-width: 400px;    
+}
+
+.button-container {
+    text-align: center;
+}
+
+.modal-content-global H3 {
+    background: #514672; /* fondo azul oscuro */
+    color: #ffffff;
+    padding: 1px;
+    margin-bottom: 1px;
+    text-align: center;
+    font-family: Arial, sans-serif;
+    font-size: 18px;
+    margin: 0;
+    border: 1px solid #ccc;    
+}
+
+.modal-content-global P {    
+    font-family: Arial, sans-serif;
+    font-size: 15px;
+}
+
+.boton {
+  background-color: #3182d3; /* azul vistoso */
+  color: white;
+  padding: 6px 12px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background-color 0.2s ease;
+  align-items: center;
+}
+
+.boton:hover {
+  background: #1a252f;
+}

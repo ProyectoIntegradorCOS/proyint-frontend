@@ -1,0 +1,81 @@
+
+@if (status; as s) {
+<div>
+
+  <p><strong>Estado:</strong> {{ s.estado }}</p>
+
+  <div style="width: 100%; background: #ddd; height: 25px; border-radius: 5px;">
+    <div
+      [style.width.%]="s.porcentaje"
+      style="height: 25px; background: #4caf50; border-radius: 5px; transition: width 0.5s;">
+    </div>
+  </div>
+
+  @if(s.filasProcesadas > 0) {
+    <p><strong>Avance:</strong> {{ s.porcentaje }}% ( {{ s.filasProcesadas | number:'1.0-0' }} filas procesadas de {{ s.totalFilas | number:'1.0-0' }} )</p>
+  
+    @if(s.horasRestantes > 0 || s.minutosRestantes > 0 || s.segundosRestantes > 0) {
+    <p>
+        <strong>Tiempo restante estimado:</strong> 
+
+        @if(s.horasRestantes > 0) {        
+            {{ s.horasRestantes }} 
+            
+            @if(s.horasRestantes === 1) {        
+            hora 
+            }
+
+            @if(s.horasRestantes > 1) {        
+            horas 
+            }
+
+            @if(s.minutosRestantes > 0) {
+                ,
+            }
+        }
+
+        @if(s.minutosRestantes > 0) {
+            {{ s.minutosRestantes }}
+            
+            @if(s.minutosRestantes === 1) {
+            minuto
+            }
+
+            @if(s.minutosRestantes > 1) {
+            minutos
+            }
+
+            @if(s.segundosRestantes > 0) {
+                ,
+            }
+        }
+        
+        @if(s.segundosRestantes > 0) {
+            {{ s.segundosRestantes }} 
+            
+            @if(s.segundosRestantes === 1) {
+            segundo
+            }
+
+            @if(s.segundosRestantes > 1) {
+            segundos
+            }
+        }
+    </p>
+    }
+  }
+
+  @if(s.estado === 'ERROR') {
+  <div style="color: red;">
+    {{ s.mensaje }}
+  </div>
+  }
+
+  @if(s.estado === 'COMPLETADO') {
+  <div style="color: green;">
+    {{ s.mensaje }}
+  </div>
+  }
+
+</div>
+}

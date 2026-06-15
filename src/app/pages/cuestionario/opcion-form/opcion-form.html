@@ -1,0 +1,24 @@
+<div class="opcion-card">
+
+  <h4>{{ opcion ? 'Editar opción' : 'Nueva opción' }}</h4>
+
+  <label>Texto de la opción *</label>
+  <input
+    type="text"
+    [(ngModel)]="form.descripcion"
+    placeholder="Ej: Sí, No, Tal vez"
+  />
+
+  <label>Ir a pregunta (ID)</label>
+  <input
+    type="number"
+    [(ngModel)]="form.idSiguientePregunta"
+    placeholder="Ej: 3"
+  />
+
+  <div class="acciones">
+    <button class="btn-guardar" (click)="aceptar()">Aceptar</button>
+    <button class="btn-cancelar" (click)="cancelar.emit()">Cancelar</button>
+  </div>
+
+</div>

@@ -1,0 +1,14 @@
+<div class="bandeja-container">
+    <h2 class="titulo">Reportes</h2>    
+    
+    <div class="grid-reportes">
+        <div
+            class="reporte-card"
+            *ngFor="let rep of reportes"
+            (click)="irDetalle(rep.ruta)"
+        >
+            <img class="icono" [src]="rep.icono" [alt]="rep.nombre" />
+            <div class="nombre">{{ rep.nombre }}</div>
+        </div>
+    </div>
+</div>

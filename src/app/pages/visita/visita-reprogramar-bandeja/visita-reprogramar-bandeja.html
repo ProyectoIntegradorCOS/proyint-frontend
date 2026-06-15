@@ -1,0 +1,286 @@
+<!-- [CHANGE][autor: cormenos@onp.gob.pe][fecha: 2026-01-21 15:01 UTC-5 (Lima)][desc: UI de pendientes de reprogramar en visitas][obj: visita-reprogramar-bandeja.html] -->
+<div class="visita-programacion">
+
+    <header>
+        <h1>Visitas pendientes de reprogramación</h1>
+    </header>
+
+    <div class="filtros">
+        Equipo:
+        <select [(ngModel)]="equipoSeleccionado" (change)="onEquipoChange()">
+            <option value="todos">Todos</option>
+            @for (eq of listaEquipos; track eq.id) {
+                <option value="{{ eq.id }}">{{ eq.nombre }}</option>
+            }
+        </select>
+
+        Colaborador:
+        <select [(ngModel)]="personaSeleccionada">
+            <option value="todos">Todos</option>
+            @for (p of listaPersonas; track p.idUsuario) {
+                <option [value]="p.idUsuario">{{ p.usuario }}</option>
+            }
+        </select>
+
+        Fecha:
+        <input type="date" [(ngModel)]="fechaSeleccionada">
+
+        <button class="boton" (click)="buscar()" title="Buscar pendientes">Buscar</button>
+        <!-- <button class="boton" (click)="limpiarFiltros()" title="Limpiar filtros">Limpiar</button> -->
+    </div>
+
+    <br/>
+
+    <div class="resumen-resultados">
+        @if(totalRegistros == 0) {
+          <span>No se encontraron visitas</span>
+        }
+        @if(totalRegistros == 1) {
+          <span>Se encontro 1 visita</span>
+        }
+        @if(totalRegistros > 1) {
+          <span>Se encontraron <strong>{{ totalRegistros }}</strong> visitas</span>
+        }
+    </div>
+
+    <br/>
+
+    <div class="tabla-contenedor">
+        <table>
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Fecha plan</th>                    
+                    <th>Colaborador</th>
+                    <th>Equipo</th>                    
+                    <th>Destino</th>
+                    <th>Direccion</th>
+                    <th>Prioridad</th>
+                    <th>Cod.PV</th>                                        
+                    <th>Estado</th>
+                    @if(mostrarReprogramar) {
+                    <th>Accion</th>
+                    }
+                </tr>
+            </thead>
+            <tbody>
+                @for (r of resultados; let i = $index; track r.itemId) {
+                    <tr>
+                        <td>{{ ((paginaActual - 1) * tamanioPagina) + i + 1 }}</td>
+                        <td>{{ r.plannedFor | date:'dd/MM/yyyy' }}</td>                        
+                        <td>{{ r.verifierNombre }}</td>
+                        <td>{{ r.equipoNombre }}</td>                        
+                        <td>{{ r.companyName }}</td>
+                        <td>{{ r.direccion }}</td>
+                        <td>{{ r.prioridad | prioridadItemPlan }}</td>
+                        <td>{{ r.plantillaPv }}</td>                        
+                        <td>{{ r.state | estadoItemPlanVisita}}</td>
+                        @if(mostrarReprogramar) {
+                        <td>
+                            <button class="btn-editar" (click)="abrirReprogramar(r)">Reprogramar</button>
+                        </td>
+                        }
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <br/>
+
+    <div class="paginacion">
+        <div class="controles">
+            <button
+                (click)="irPagina(1)"
+                [disabled]="paginaActual === 1"
+                title="Primera pagina">
+                <<
+            </button>
+
+            <button
+                (click)="irPagina(paginaActual - 1)"
+                [disabled]="paginaActual === 1"
+                title="Anterior">
+                <
+            </button>
+
+            <span>
+                Pagina
+                <select
+                [(ngModel)]="paginaActual"
+                (change)="onCambioPagina()"
+                class="select-pagina">
+                <option
+                    *ngFor="let p of paginas"
+                    [value]="p">
+                    {{ p }}
+                </option>
+                </select>
+                de {{ totalPaginas }}
+            </span>
+
+            <button
+                (click)="irPagina(paginaActual + 1)"
+                [disabled]="paginaActual === totalPaginas"
+                title="Siguiente">
+                >
+            </button>
+
+            <button
+                (click)="irPagina(totalPaginas)"
+                [disabled]="paginaActual === totalPaginas"
+                title="Ultima pagina">
+                >>
+            </button>
+        </div>
+    </div>
+
+    <div class="modal-backdrop" *ngIf="mostrarModalReprogramar">
+        <div class="modal-dialog">
+            <div class="modal-header">
+                <h3>Reprogramar visita</h3>
+            </div>
+            
+            <div class="modal-body">
+
+                <!-- Sección: Datos del plan anterior -->
+                <div class="modal-section">
+                    <div class="modal-section-title">
+                    Datos de la visita que quedó pendiente
+                    </div>
+
+                    <div class="modal-row">
+                        <label>Fecha:</label>
+                        <span>{{ registroSeleccionado?.plannedFor | date:'dd/MM/yyyy' }}</span>
+                    </div>
+
+                    <div class="modal-row">
+                        <label>Colaborador:</label>
+                        <span>{{ registroSeleccionado?.verifierNombre }}</span>
+                    </div>
+
+                    <div class="modal-row">
+                        <label>Destino:</label>
+                        <span>{{ registroSeleccionado?.companyName }}</span>
+                    </div>
+
+                    <div class="modal-row">
+                        <label>Dirección:</label>
+                        <span>{{ registroSeleccionado?.direccion }}</span>
+                    </div>
+
+                    <div class="modal-row">
+                        <label>Prioridad:</label>
+                        <span>{{ registroSeleccionado?.prioridad | prioridadItemPlan}}</span>
+                    </div>
+
+                    <div class="modal-row">
+                        <label>Cod.PV:</label>
+                        <span>{{ registroSeleccionado?.plantillaPv }}</span>
+                    </div>
+                </div>
+
+                <!-- Sección: Datos de la reasignación -->
+                <div class="modal-section">
+                    <div class="modal-section-title">
+                    Datos para la reprogramación
+                    </div>
+
+                    <div class="modal-row">
+                        <label>Fecha</label>
+                        <input
+                            type="date"                            
+                            [min]="minFechaReprogramacion"
+                            [(ngModel)]="reassignForm.newPlannedFor"
+                            (change)="cargarVerificadoresPorFecha()"
+                            (keydown)="$event.preventDefault()"
+                            (paste)="$event.preventDefault()">
+
+                    </div>
+
+                    <div class="modal-row">
+                    <label>Colaborador</label>
+                    <select [(ngModel)]="reassignForm.newVerifierId">
+                        <option [ngValue]="0">-- Seleccione --</option>
+                        @for (p of listaPersonasReasignar; track p.id) {
+                        <option [value]="p.id">{{ p.nombre }}</option>
+                        }
+                    </select>
+
+                    @if (mostrarBotonCrearPlan) {
+                        <!--
+                        <button class="boton" type="button" (click)="abrirCrearPlan()">
+                        Crear plan
+                        </button>
+                        -->
+                    }
+                    </div>
+
+                    <div class="modal-row">
+                    <label>Comentario</label>
+                    <textarea rows="3" [(ngModel)]="reassignForm.reason"></textarea>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="modal-actions">
+                <button class="boton" (click)="validarReprogramacion()">Guardar</button>
+                <button class="boton" (click)="cerrarModalReprogramar()">Cancelar</button>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- MODAL DE MENSAJE -->
+    <div class="modal-backdrop" id="modalMensaje" *ngIf="mostrarModalMensaje">       
+        <div class="modal-contenido">
+            <h3 class="modal-titulo">
+                Mensaje
+            </h3>
+
+            <p class="modal-mensaje">
+                {{ mensajeModal }}
+            </p>
+
+            <div class="modal-actions">
+                <button class="boton" (click)="cerrarMensaje()">
+                    Aceptar
+                </button>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- MODAL DE CONFIRMACION -->
+    <div class="modal-backdrop" *ngIf="mostrarModalConfirmacion">
+        <div class="modal-contenido">
+            <h3 class="modal-titulo">
+                Confirmación
+            </h3>
+
+            <p class="modal-mensaje">
+                ¿Desea guardar los datos?
+            </p>
+
+            <div class="modal-actions">
+                <button class="boton" (click)="aceptarGuardar()">
+                    Aceptar
+                </button>
+
+                <button class="boton" (click)="cancelarGuardar()">
+                    Cancelar
+                </button>
+            </div>
+        </div>
+    </div>
+
+
+  <!-- Modal de procesando -->
+  <div class="modal-backdrop superior" *ngIf="mostrarProcesando">
+    <div class="modal-contenido">
+      <p class="modal-mensaje">⏳ Cargando, por favor espere…</p>
+    </div>
+  </div>    
+
+</div>

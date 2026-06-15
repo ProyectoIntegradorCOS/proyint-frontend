@@ -1,0 +1,164 @@
+<div class="cuestionario-bandeja">
+
+  <header>
+    <h1>Cuestionarios</h1>
+  </header>
+
+  <!-- FILTROS -->
+  <div class="filtros">
+    Nombre:
+    <input
+      type="text"
+      placeholder="Nombre del cuestionario"
+      [(ngModel)]="filtroNombre"
+      style="text-transform: uppercase;"
+      (keyup.enter)="buscar()"
+    >
+
+    <button class="boton" (click)="buscar()">Buscar</button>
+    <!-- <button class="boton" (click)="limpiar()">Limpiar</button> -->
+  </div>
+
+  <!-- Resumen + botón -->
+  <div class="resumen-barra">
+    <div class="resumen-resultados">
+      @if (totalRegistros === 0) { <span>No se encontraron cuestionarios</span> }
+      @if (totalRegistros === 1) { <span>Se encontró 1 cuestionario</span> }
+      @if (totalRegistros > 1) {
+        <span>Se encontraron <strong>{{ totalRegistros }}</strong> cuestionarios</span>
+      }
+    </div>
+
+    @if (mostrarNuevo) {
+    <button class="boton" (click)="nuevo()">Nuevo</button>
+    }
+  </div>
+
+  <!-- TABLA -->
+  <div class="tabla-contenedor">
+    <table>
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Nombre</th>
+          <th>Descripción</th>
+          @if (mostrarEditar) {
+          <th>Editar</th>
+          }
+          @if (!mostrarEditar) {
+          <th>Ver</th>
+          }
+          @if (mostrarEliminar) {
+          <th>Eliminar</th>
+          }
+        </tr>
+      </thead>
+      <tbody>
+        @for (c of cuestionarios(); let i = $index; track $index) {
+          <tr>
+            <td>{{ ((paginaActual - 1) * tamanioPagina) + i + 1 }}</td>
+            <td>{{ c.nombre }}</td>
+            <td>{{ c.descripcion }}</td>
+            @if (mostrarEditar) {
+            <td>
+              <button class="btn-editar" (click)="editar(c)">✏️</button>
+            </td>
+            }
+            @if (!mostrarEditar) {
+            <td>
+              <button class="btn-editar" (click)="editar(c)" title="Ver">🔎</button>
+            </td>
+            }
+            @if (mostrarEliminar) {
+            <td>
+              <button class="btn-eliminar" (click)="abrirEliminar(c)">🗑️</button>
+            </td>
+            }
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+
+  <!-- PAGINACIÓN -->
+  <div class="paginacion">
+    <div class="controles">
+      <button (click)="irPagina(1)" [disabled]="paginaActual === 1">⏮</button>
+      <button (click)="irPagina(paginaActual - 1)" [disabled]="paginaActual === 1">←</button>
+
+      <span>
+        Página
+        <select [(ngModel)]="paginaActual" (change)="onCambioPagina()" class="select-pagina">
+          <option *ngFor="let p of paginas" [value]="p">{{ p }}</option>
+        </select>
+        de {{ totalPaginas }}
+      </span>
+
+      <button (click)="irPagina(paginaActual + 1)" [disabled]="paginaActual === totalPaginas">→</button>
+      <button (click)="irPagina(totalPaginas)" [disabled]="paginaActual === totalPaginas">⏭</button>
+    </div>
+  </div>
+
+
+  <!-- MODAL FORM -->
+  @if (mostrarModal()) {
+    <div class="modal-backdrop">
+      <div class="modal-dialog" (click)="$event.stopPropagation()">
+        <app-cuestionario-form
+          [cuestionario]="seleccionado()"
+          (cerrar)="cerrarModal($event)">
+        </app-cuestionario-form>
+      </div>
+    </div>
+  }
+
+
+  <!-- MODAL DE MENSAJE -->
+  <div class="modal-backdrop" id="modalMensaje" *ngIf="mostrarModalMensaje">       
+      <div class="modal-contenido">
+          <h3 class="modal-titulo">
+              Mensaje
+          </h3>
+
+          <p class="modal-mensaje">
+              {{ mensajeModal }}
+          </p>
+
+          <div class="modal-actions">
+              <button class="boton" (click)="cerrarMensaje()">
+                  Aceptar
+              </button>
+          </div>
+      </div>
+  </div>  
+
+  <!-- MODAL DE CONFIRMACION PARA ELIMINAR  -->
+  @if (mostrarModalEliminar) {
+    <div class="modal-backdrop">
+      <div class="modal-contenido">
+        <h3 class="modal-titulo">Confirmación</h3>
+        <!-- [CHANGE][autor: cormenos@onp.gob.pe][fecha: 2026-01-16 11:47 UTC-5 (Lima)][desc: Soporta MaterialLocalizations para es_PE/es_ES (historial por fecha)][obj: CuestionarioBandejaComponent eliminar warning] -->
+        <p class="modal-mensaje">
+          ¿Desea eliminar el cuestionario?
+          <br/>
+          Se eliminarán sus preguntas y opciones relacionadas.
+        </p>
+
+        <div class="modal-actions">
+          <button class="boton" (click)="confirmarEliminar()">Aceptar</button>
+          <button class="boton" (click)="cancelarEliminar()">Cancelar</button>
+        </div>
+      </div>
+    </div>
+  }
+
+
+  <!-- Modal de procesando -->
+  <div class="modal-backdrop superior" *ngIf="mostrarCarga">
+    <div class="modal-contenido">
+      <p class="modal-mensaje">⏳ Cargando, por favor espere…</p>
+    </div>
+  </div>
+
+
+</div>

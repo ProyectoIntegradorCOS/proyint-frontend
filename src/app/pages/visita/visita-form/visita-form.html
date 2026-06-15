@@ -1,0 +1,360 @@
+<div class="form-container">
+
+    @if (modo === 'nuevo') {
+    <h2>Nuevo plan de visita</h2>
+    }
+
+    @if(!(modo === 'nuevo')) {
+     <!-- Modo edicion -->
+     @if(puedeEditarPlan) {
+        <h2>Editar plan de visita</h2>
+     }
+     @if(!puedeEditarPlan) {
+        <h2>Ver plan de visita</h2>
+     }
+    }
+
+
+    <div class="fila-label">
+        <label>Colaborador:</label>
+        <select [(ngModel)]="personaSeleccionada" 
+                class="campo-corto"
+                #persona="ngModel" 
+                required 
+                #colaboradorSelect
+                [disabled]="!(modo === 'nuevo' || puedeEditarPlan)"
+        >
+            <option [ngValue]="null">-- Seleccione --</option>
+            @for (p of listaPersonas; track p.idUsuario) {
+                <option [value]="p.idUsuario">{{ p.usuario }}</option>
+            }
+        </select>
+    </div>
+
+    <div class="fila-label">
+        <label>Fecha:</label>
+        <input type="date"
+            [(ngModel)]="fechaSeleccionada"
+            class="campo-corto"
+            #fecha="ngModel"
+            required
+            [min]="hoy"
+            [disabled]="!(modo === 'nuevo' || puedeEditarPlan)"
+        >
+    </div>
+
+    <div *ngIf="!visitasGeneradas" class="visitas-generar">
+        <label>Cantidad de destinos a visitar:</label>
+        <input type="number" 
+                min="1" 
+                [(ngModel)]="cantidadVisitas"
+                [disabled]="!(modo === 'nuevo' || puedeEditarPlan)"
+        >
+
+        @if (modo === 'nuevo' || puedeEditarPlan) {
+        <button (click)="generarVisitas()">Generar</button>
+        }
+    </div>
+
+    <!-- NUEVO: Tabla dinámica de visitas -->
+    <div *ngIf="visitasGeneradas" class="tabla-visitas">
+        <div><h3>Visitas a realizar</h3></div>
+        
+        <!-- Paginación simple -->
+        <div class="div-agregarfila">            
+            @if (modo === 'nuevo' || puedeEditarPlan) {
+            <button class="boton" (click)="agregarFila()">Agregar fila</button>
+            }
+        </div>
+        
+        <div class="tabla-scroll">
+            <table class="tabla-resultados">
+                <thead>
+                    <tr>
+                        <th >#</th>
+                        <th class="destino-columna">Destino</th>
+                        <th class="direccion-columna">Dirección</th>
+                        <th class="hora-columna">Hora cita</th>                        
+                        <th>Prioridad</th>
+                        <th class="pv-columna">Cód.PV</th>                            
+                        @if (modo === 'editar' || modo === 'lectura') {                    
+                        <th>Estado</th>
+                        }
+                        @if (modo === 'nuevo' || puedeEditarPlan) {
+                        <th class="col-acciones">Acciones</th>
+                        }
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let v of visitas; let i = index">
+                        <td >{{ i + 1 }}</td>
+                        <td class="destino-columna">
+                            <div class="destino-cell">
+                                <div class="destino-top">
+                                    <input type="text" 
+                                        #destinoInput
+                                        [(ngModel)]="v.companyName" 
+                                        placeholder="Seleccione el destino" 
+                                        maxlength="200"
+                                        readonly
+                                        [disabled]="!(modo === 'nuevo' || (puedeEditarPlan && !(v.state === 'DONE')))"
+                                    >
+                                    @if (modo === 'nuevo' || puedeEditarPlan) {
+                                    <div class="acciones-contenedor">
+                                        <button tabindex="-1"
+                                            class="icono-accion"
+                                            type="button"
+                                            title="Seleccionar destino"
+                                            (click)="abrirBusquedaDestino(i)"
+                                            [disabled]="!(modo === 'nuevo' || (puedeEditarPlan && !(v.state === 'DONE')))"
+                                        >🔎</button>
+                                        @if (v.destinoId) {
+                                        <button tabindex="-1"
+                                            class="icono-accion"
+                                            type="button"
+                                            [title]="'Editar destino'"
+                                            (click)="mostrarModalEdicionDestino(v)"                                            
+                                            [disabled]="!(modo === 'nuevo' || (puedeEditarPlan && !(v.state === 'DONE')))"
+                                        >✏️</button>
+                                        }
+
+                                        <!--
+                                        <button tabindex="-1"
+                                            class="icono-accion"
+                                            type="button"
+                                            title="Quitar destino"
+                                            (click)="limpiarDestino(v)"
+                                            [disabled]="!v.destinoId || !(modo === 'nuevo' || (puedeEditarPlan && !(v.state === 'DONE')))"
+                                        >✖</button>                                        
+                                        -->
+                                    </div>
+                                    }
+
+                                </div>
+
+                            </div>
+                        </td>
+
+                        <td class="direccion-columna">
+
+                            <!-- <ng-template #direccionLibre> -->
+                                <input type="text"
+                                    [(ngModel)]="v.direccion"
+                                    placeholder="Dirección"
+                                    maxlength="100"
+                                    style="text-transform: uppercase;" 
+                                    readonly
+                                    [disabled]="!(modo === 'nuevo' || (puedeEditarPlan && !(v.state === 'DONE')))"
+                                >
+                            <!-- </ng-template> -->
+                        </td>
+                        
+                        <td class="hora-columna">
+                            <input type="time" [(ngModel)]="v.horaCita" step="60"
+                                tabindex="-1"
+                                (keydown)="controlarEntradaHora($event)"
+                                onkeypress="return false"
+                                oninput="return false"
+                                onpaste="return false"
+                                [disabled]="!(modo === 'nuevo' || (puedeEditarPlan && !(v.state === 'DONE')))"
+                            >
+                        </td>
+
+                        <td>
+                            <select
+                                [(ngModel)]="v.prioridad"
+                                [disabled]="!(modo === 'nuevo' || (puedeEditarPlan && !(v.state === 'DONE')))"
+                            >
+                                <option value="">-- Seleccione --</option>
+                                <option [ngValue]="'MUY_ALTA'">Muy Alta</option>
+                                <option [ngValue]="'ALTA'">Alta</option>
+                                <option [ngValue]="'NORMAL'">Normal</option>
+                            </select>
+                        </td>
+
+                        <td class="pv-columna">
+                            <input
+                                 type="text"
+                                 [(ngModel)]="v.plantillaPv"
+                                 placeholder="Código"
+                                 maxlength="11"
+                                 [disabled]="!(modo === 'nuevo' || (puedeEditarPlan && !(v.state === 'DONE')))"
+                            >
+                        </td>
+
+                        @if (modo === 'editar' || modo === 'lectura') {
+                        <td>                            
+                            @if (!(v.state === 'DONE')) {
+                              {{ v.state | estadoItemPlanVisita}}
+                            }
+
+                            @if (v.state === 'DONE') {
+                                <a
+                                    href="javascript:void(0)"
+                                    class="estado-link"
+                                    (click)="verDetalleVisita(v)"
+                                    title="Haga clic para ver el resultado de la visita"
+                                >
+                                    {{ v.state | estadoItemPlanVisita}}
+                                </a>
+                            }
+                        </td>
+                        }
+
+                        @if (modo === 'nuevo' || puedeEditarPlan) {
+                        <td class="col-acciones">    
+                            @if (!(v.state === 'DONE')) {
+                            <div class="acciones-contenedor">
+                                <button class="icono-accion" tabindex="-1" (click)="subirFila(i)" [disabled]="i===0">▲</button>
+                                <button class="icono-accion" tabindex="-1" (click)="bajarFila(i)" [disabled]="i===visitas.length-1">▼</button>
+                                <button class="icono-accion" tabindex="-1" (click)="eliminarFila(i)">🗑️</button>                        
+                            </div>                    
+                            }
+                        </td>    
+                        }
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+
+    <div class="error" *ngIf="mostrarValidacion">
+        {{mensajeValidacion}}
+    </div>
+
+    <!-- Botón guardar -->
+    @if (modo === 'nuevo' || puedeEditarPlan) {
+    <div class="acciones">
+        <button class="boton" (click)="validar()">Guardar</button>
+        <button class="boton" (click)="cerrarModal()">Cancelar</button>
+    </div>
+    }
+
+    @if (!(modo === 'nuevo' || puedeEditarPlan)) {
+        <div class="acciones">
+            <button class="boton" (click)="cerrarModal()">Cancelar</button>
+        </div>
+    }
+
+</div>
+
+  <!-- MODAL DE CONFIRMACION -->
+  <div class="modal-backdrop" *ngIf="mostrarModalConfirma">
+    <div class="modal-contenido">
+        <h3 class="modal-titulo">
+            Confirmación
+        </h3>
+
+        <p class="modal-mensaje">
+            ¿Desea guardar los datos?
+        </p>
+
+        <div class="modal-actions">
+            <button class="boton" (click)="guardar()">
+                Aceptar
+            </button>
+
+            <button class="boton" (click)="ocultarModalConfirmacion()">
+                Cancelar
+            </button>
+        </div>
+    </div>
+  </div>
+
+
+    <!-- MODAL DE MENSAJE -->
+    <div class="modal-backdrop" *ngIf="mostrarModalMensaje">
+        <div class="modal-contenido">
+            <h3 class="modal-titulo">
+                Mensaje
+            </h3>
+
+            <p class="modal-mensaje">
+                {{mensajeModal}}
+            </p>
+
+            <div class="modal-actions">
+                <button class="boton" (click)="cerrarMensajeModal()">
+                    Aceptar
+                </button>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- MODAL DETALLE VISITA -->
+    <div class="modal-backdrop" *ngIf="mostrarModalDetalleVisita">
+        <div class="modal-contenido modal-detalle">
+    
+            <h3 class="modal-titulo">
+                Detalle de la visita realizada
+            </h3>
+        
+            <div class="modal-body">
+                <p><strong>Inicio:</strong> {{ visitaSeleccionada.startTime | date:'dd/MM/yyyy HH:mm:ss' }}</p>                
+                <p><strong>Fin:</strong> {{ visitaSeleccionada.endTime | date:'dd/MM/yyyy HH:mm:ss' }}</p>
+
+                <!-- [CHANGE][autor: cormenos@onp.gob.pe][fecha: 2026-01-16 10:42 UTC-5 (Lima)][desc: Soporta MaterialLocalizations para es_PE/es_ES (historial por fecha)][obj: VisitaFormComponent respuestas cuestionario] -->
+                <div class="seccion-respuestas">
+                    @if (!cargandoRespuestas && respuestasCuestionario.length) {
+                    <p><strong>Cuestionario</strong></p>
+                    }
+
+                    @if (cargandoRespuestas) {
+                      <p>Cargando respuestas...</p>
+                    }
+
+                    @if (!cargandoRespuestas && mensajeRespuestas) {
+                      <p>{{ mensajeRespuestas }}</p>
+                    }
+
+                    <!-- [CHANGE][autor: cormenos@onp.gob.pe][fecha: 2026-01-16 11:38 UTC-5 (Lima)][desc: Soporta MaterialLocalizations para es_PE/es_ES (historial por fecha)][obj: VisitaFormComponent respuestas warning] -->
+                    @if (!cargandoRespuestas && respuestasCuestionario.length) {
+                      <table class="tabla-respuestas">
+                        <thead>
+                          <tr>
+                            <th>#</th>
+                            <th>Pregunta</th>
+                            <th>Respuesta</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr *ngFor="let r of respuestasCuestionario; let i = index">
+                            <td class="col-numero">{{ i + 1 }}</td>
+                            <td>{{ r.textoPregunta }}</td>
+                            <td>{{ r.respuesta }}</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    }
+                </div>
+            </div>
+        
+            <div class="modal-actions">
+                <button class="boton" (click)="cerrarModalDetalleVisita()">
+                Cerrar
+                </button>
+            </div>
+    
+        </div>
+    </div>    
+
+    <app-destino-selector
+        #destinoSelector
+        [abierto]="mostrarModalSeleccionDestinos"
+        (seleccionado)="onDestinoSeleccionado($event)"
+        (cerrado)="cerrarModalBusquedaDestino()"
+        (nuevo)="nuevoDestinoModalBusqueda()"
+    ></app-destino-selector>
+
+
+    <div class="modal-backdrop superior" *ngIf="mostrarModalDestino">
+        <app-destino-form    
+        origen="BandejaVisitas"
+        [modo]="modoFormularioDestino"
+        [destino]="destinoSeleccionado"
+        (guardado)="onDestinoGuardado($event)"
+        (cerrado)="onDestinoCerrado()"
+        ></app-destino-form>    
+    </div>

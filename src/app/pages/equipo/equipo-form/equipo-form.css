@@ -1,0 +1,184 @@
+.modal-principal {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.5);
+}
+  
+.modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    width: 460px;           /* un poco más ancho para permitir las 2 columnas */
+    transform: translate(-50%, -50%);
+    background: white;
+    padding: 20px 24px;
+    border-radius: 8px;
+}
+
+/* --- TÍTULO CENTRADO --- */
+.modal h2 {
+    text-align: center;
+    margin-top: 0;
+}
+  
+/* Contenedor de cada fila etiqueta + campo */
+.form-row {
+    display: flex;
+    align-items: center;
+    margin-top: 12px;
+}
+  
+/* Etiquetas a la izquierda */
+.form-row label {
+    width: 170px;          /* controla el ancho de la columna izquierda */
+    font-weight: bold;
+}
+  
+/* Campo a la derecha */
+.form-row input,
+.form-row select {
+    width: 70%;            /* menos ancho que antes */
+    padding: 6px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+  
+/* Errores alineados bajo el campo */
+.error {
+    margin-left: 170px;    /* igual al width del label */
+    color: red;
+    font-size: 12px;
+    margin-top: 2px;
+}
+  
+/* --- BOTONES CENTRADOS --- */
+.acciones {
+    margin-top: 20px;
+    display: flex;
+    gap: 10px;
+    justify-content: center;   /* centrado */
+}
+  
+button {
+    padding: 8px 14px;
+    cursor: pointer;
+}
+  
+.cancelar {
+    background: #777;
+    color: white;
+}
+
+
+
+/* Estilos para el modal de confirmacion */
+.modal-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0,0,0,0.55);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+  }
+  
+  .modal-contenido {
+    background: #ffffff;
+    padding: 25px;
+    border-radius: 10px;
+    width: 360px;
+    max-width: 90vw;
+    text-align: center;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.25);
+    animation: modalAnimacion 0.25s ease-out;
+  }
+  
+  .modal-titulo {
+    margin: 0 0 10px;
+    font-size: 20px;
+    font-weight: bold;
+    color: #2c3e50;
+  }
+  
+  .modal-mensaje {
+    font-size: 15px;
+    margin-bottom: 20px;
+    color: #333;
+  }
+  
+  .modal-actions {
+    display: flex;
+    justify-content: center;
+    gap: 20px; /* ← separación entre botones */
+    margin-top: 15px;
+  }
+  
+  .btn-modal {
+    background: #2c3e50;
+    color: white;
+    padding: 10px 22px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+  }
+  
+  .btn-modal:hover {
+    background: #1a252f;
+  }
+  
+  .obligatorios-msg {
+    color: #2b4739;
+    font-size: 0.85em;
+    margin-top: 5px;
+    display: block;
+}
+
+
+
+.boton {
+  background-color: #3182d3;
+  color: white;
+  padding: 6px 12px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background-color 0.2s ease;
+}
+
+.boton:hover {
+  background: #1a252f;
+}
+
+.modal-titulo-principal {
+  margin: 0;
+  text-align: center;
+  background: #2c3e50;
+  color: #ffffff;
+  padding: 5px 8px;
+  border-radius: 4px;
+  font-size: 16px;
+  font-family: Arial;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+
+#modalContenido {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    padding: 20px 40px;
+    border-radius: 8px;
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+    text-align: center;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+  
+}

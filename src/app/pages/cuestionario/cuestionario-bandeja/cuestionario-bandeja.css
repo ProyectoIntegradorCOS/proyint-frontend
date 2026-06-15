@@ -1,0 +1,251 @@
+.cuestionario-bandeja {
+  padding: 12px;
+  font-family: Arial, sans-serif;
+}
+
+/* ---------------- HEADER ---------------- */
+.cuestionario-bandeja header {
+  background: #ffffff;
+  color: #000000;
+  padding: 10px;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.cuestionario-bandeja header h1 {
+  font-size: 18px;
+  margin: 0;
+}
+
+/* ---------------- FILTROS ---------------- */
+.cuestionario-bandeja .filtros {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.cuestionario-bandeja .filtros input,
+.cuestionario-bandeja .filtros select {
+  padding: 4px 8px;
+}
+
+/* ---------------- BOTONES ---------------- */
+.cuestionario-bandeja .boton {
+  background-color: #3182d3;
+  color: white;
+  padding: 6px 12px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background-color 0.2s ease;
+}
+
+.cuestionario-bandeja .boton:hover {
+  background: #1a252f;
+}
+
+/* ---------------- RESUMEN ---------------- */
+.cuestionario-bandeja .resumen-resultados {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+/* ---------------- TABLA ---------------- */
+.cuestionario-bandeja .tabla-contenedor table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.cuestionario-bandeja .tabla-contenedor th,
+.cuestionario-bandeja .tabla-contenedor td {
+  border: 1px solid #ccc;
+  padding: 6px;
+  text-align: left;
+}
+
+.cuestionario-bandeja .tabla-contenedor th {
+  background: #2c3e50;
+  color: white;
+}
+
+/* Botón editar */
+.cuestionario-bandeja .btn-editar {
+  cursor: pointer;
+  padding: 2px 6px;
+  background: #ffffff;
+  border: none;
+  border-radius: 4px;
+}
+
+/* ---------------- PAGINACIÓN ---------------- */
+.cuestionario-bandeja .paginacion {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.cuestionario-bandeja .paginacion button {
+  background: #2c3e50;
+  color: white;
+  padding: 4px 10px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.cuestionario-bandeja .paginacion button:hover:not(:disabled) {
+  background: #1a252f;
+}
+
+.cuestionario-bandeja .paginacion button:disabled {
+  background: #8a8a8a;
+  cursor: default;
+}
+
+.cuestionario-bandeja .paginacion .controles {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: nowrap;
+}
+
+.cuestionario-bandeja .paginacion .controles span {
+  white-space: nowrap;
+}
+
+.cuestionario-bandeja .paginacion .controles button {
+  width: 34px;
+  height: 28px;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+}
+
+.cuestionario-bandeja .select-pagina {
+  padding: 4px 8px;
+  margin: 0 6px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+/* ---------------- MODAL BACKDROP ---------------- */
+.cuestionario-bandeja .modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 3000;
+}
+
+.cuestionario-bandeja .modal-dialog {
+  background: white;
+  padding: 0;
+  border-radius: 8px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  max-width: 750px;
+  width: 90%;
+}
+
+
+.resumen-barra {
+  display: flex;
+  justify-content: space-between; /* texto a la izquierda, botón a la derecha */
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.resumen-resultados {
+  font-size: 14px;
+  color: #333;
+}
+
+
+.btn-eliminar {
+  cursor: pointer;
+  padding: 4px 8px;
+  background: #f8d7da;
+  border: none;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.btn-eliminar:hover {
+  background: #dc3545;
+  color: white;
+}
+
+/* Modal confirmación */
+.modal-contenido {
+  background: #ffffff;
+  padding: 25px;
+  border-radius: 10px;
+  width: 360px;
+  max-width: 90vw;
+  text-align: center;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.25);
+  animation: modalAnimacion 0.25s ease-out;
+}
+
+.modal-titulo {
+  font-size: 20px;
+  margin-bottom: 10px;
+}
+
+.modal-mensaje {
+  margin-bottom: 20px;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+@keyframes modalAnimacion {
+  from { opacity: 0; transform: scale(0.85); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+
+
+
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 3000;
+}
+
+.boton {
+    background-color: #3182d3; /* azul vistoso */
+    color: white;
+    padding: 5px 15px;     /* 👈 menos alto (antes 10px) */
+    border: 1px solid #007bff;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background-color 0.2s ease;
+  }
+  
+  .boton:hover {
+    background: #1a252f;
+  }
+  

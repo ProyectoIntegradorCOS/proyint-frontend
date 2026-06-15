@@ -1,0 +1,43 @@
+.bandeja-container {
+    padding: 20px;
+  }
+  
+   .titulo {
+    margin: 0;              /* ← elimina el margen superior e inferior */
+    text-align: center;
+    margin-bottom: 40px; /* 👈 Aumentamos la separación */
+}
+  
+  .grid-reportes {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, 150px);
+    justify-content: center;
+    gap: 20px;
+  }
+  
+  .reporte-card {
+    background: #ffffff;
+    border-radius: 10px;
+    padding: 20px;
+    text-align: center;
+    cursor: pointer;
+    transition: transform .2s, box-shadow .2s;
+    box-shadow: 0 2px 5px rgba(0,0,0,.1);
+  }
+  
+  .reporte-card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 3px 8px rgba(0,0,0,.2);
+  }
+  
+  .icono {
+    width: 70px;
+    height: 70px;
+    margin-bottom: 10px;
+  }
+  
+  .nombre {
+    font-size: 16px;
+    font-weight: bold;
+  }
+  

@@ -1,0 +1,214 @@
+<div class="bandeja-equipo">
+
+    <header>
+      <h1>Equipos de trabajo en campo</h1>
+    </header>
+  
+    <!-- Filtros -->
+    <div class="filtros">
+      Equipo:
+      <input type="text" 
+             placeholder="Nombre" 
+             [(ngModel)]="nombreEquipo" 
+             style="text-transform: uppercase;"
+             (keyup.enter)="realizarBusqueda()">
+      <!--
+      Supervisor:
+      <input type="text" placeholder="Nombre del supervisor" [(ngModel)]="nombreSupervisor">
+      -->
+      <button class="boton" (click)="realizarBusqueda()" title="Realiza la búsqueda de equipos de trabajo">Buscar</button>
+      <!-- <button class="boton" (click)="limpiarFiltros()" title="Limpia los filtros de búsqueda">Limpiar</button> -->
+    </div>
+  
+    <br/>
+  
+    <!-- Resumen de resultados -->
+    <div class="resumen-resultados">
+
+      @if(totalRegistros == 0) {
+        <span>
+          No se encontraron equipos
+        </span>
+      }
+
+      @if(totalRegistros == 1) {
+        <span>
+          Se encontró 1 equipo
+        </span>
+      }
+
+      @if(totalRegistros > 1) {
+      <span>
+        Se encontraron <strong>{{ totalRegistros }}</strong> equipos
+      </span>
+      }
+      
+    
+      @if (mostrarNuevo) {
+        <button class="boton btn-nuevo"
+                (click)="abrirRegistro()"
+                title="Muestra el formulario para el registro de un equipo de trabajo">
+          Nuevo
+        </button>
+      }
+    </div>    
+  
+
+    <!-- Tabla -->
+    <div class="tabla-contenedor">
+      <table>
+        <thead>
+          <tr>
+            <th (click)="ordenarPor('id')">#</th>
+            <th (click)="ordenarPor('nombre')">Equipo</th>            
+            <th (click)="ordenarPor('supervisor.nombre')">Líder</th>
+            <th>Cuestionario</th>
+            <!-- <th (click)="ordenarPor('visitas')">Realiza visitas</th> -->            
+            @if (mostrarEditar) {              
+            <th>Editar</th>      
+            }      
+            @if (mostrarEliminar) {
+            <th>Eliminar</th>
+            }
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let eq of equipos; let i = index">
+            <td>{{ ((paginaActual - 1) * tamanioPagina) + i + 1 }}</td>
+            <td>{{ eq.nombre }}</td>            
+            <td>{{ eq.supervisorNombre || '-' }}</td>
+            <td>{{ eq.cuestionarioNombre }}</td>
+            <!-- <td>{{ eq.realizaVisitas ? 'Sí' : 'No' }}</td> -->
+            @if (mostrarEditar) {
+            <td>
+                <span class="icono-editar" (click)="abrirEdicion(eq)" title="Editar">✏️</span>
+            </td>
+            }
+            @if (mostrarEliminar) {
+            <td>
+              <span class="icono-eliminar" (click)="confirmarEliminar(eq)" title="Eliminar">🗑️</span>
+            </td>
+            }            
+          </tr>
+        </tbody>
+      </table>
+    </div>  
+
+    <br/>
+   
+
+    <!-- Paginación -->
+    <div class="paginacion">
+      <div class="controles">
+    
+        <!-- Primera página -->
+        <button
+          (click)="cambiarPagina(1)"
+          [disabled]="paginaActual === 1"
+          title="Primera página">
+          ⏮
+        </button>
+      
+        <button
+          (click)="cambiarPagina(paginaActual - 1)"
+          [disabled]="paginaActual === 1"
+          title="Anterior">
+          ←
+        </button>
+    
+        <span>
+          Página
+          <select
+            [(ngModel)]="paginaActual"
+            (change)="onCambioPagina()"
+            class="select-pagina">
+            <option
+              *ngFor="let p of paginas"
+              [value]="p">
+              {{ p }}
+            </option>
+          </select>
+          de {{ totalPaginas }}
+        </span>
+    
+        <button
+          (click)="cambiarPagina(paginaActual + 1)"
+          [disabled]="paginaActual === totalPaginas"
+          title="Siguiente">
+          →
+        </button>
+
+        <!-- Última página -->
+        <button
+          (click)="cambiarPagina(totalPaginas)"
+          [disabled]="paginaActual === totalPaginas"
+          title="Última página">
+          ⏭
+        </button>
+    
+      </div>
+    </div>
+
+
+    <!-- MODAL DE CONFIRMACION -->
+    <div class="modal-backdrop" *ngIf="mostrarModalConfirmaEliminacion">
+      <div class="modal-contenido">
+          <h3 class="modal-titulo">
+              Confirmación
+          </h3>
+
+          <p class="modal-mensaje">
+              ¿Desea eliminar el equipo de trabajo?
+          </p>
+
+          <div class="modal-actions">
+              <button class="boton" (click)="aceptarEliminar()">
+                  Aceptar
+              </button>
+
+              <button class="boton" (click)="cancelarEliminar()">
+                  Cancelar
+              </button>
+          </div>
+      </div>
+    </div>
+
+    <!-- MODAL DE MENSAJE -->
+    <div class="modal-backdrop" *ngIf="mostrarMensaje">
+      <div class="modal-contenido">
+          <h3 class="modal-titulo">
+              Mensaje
+          </h3>
+
+          <p class="modal-mensaje">
+              {{ mensajeTexto }}
+          </p>
+
+          <div class="modal-actions">
+              <button class="boton" (click)="cerrarModalMensaje()">
+                  Aceptar
+              </button>
+          </div>
+      </div>
+    </div>
+
+
+
+  <!-- Modal de procesando -->
+  <div class="modal-backdrop superior" *ngIf="mostrarCarga">
+    <div class="modal-contenido">
+      <p class="modal-mensaje">⏳ Cargando, por favor espere…</p>
+    </div>
+  </div>
+    
+
+    <app-equipo-form 
+        *ngIf="mostrarModal"
+        [modo]="modoFormulario"
+        [equipo]="equipoSeleccionado"
+        (guardado)="onGuardado()"
+        (cerrado)="cerrarModal()">
+    </app-equipo-form>
+
+  </div>
+  

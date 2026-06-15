@@ -1,0 +1,294 @@
+.reporte-container {
+    padding: 10px;
+    font-family: Arial, sans-serif;
+    }
+    
+    
+    .titulo {
+      margin: 0;              /* ← elimina el margen superior e inferior */
+      text-align: center;
+      background: #ffffff;
+      color: #000000;
+      padding: 10px;
+      border-radius: 6px;
+    }
+    
+    
+ .filtros-container {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.filtros-grupo {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.filtros-accion {
+  display: flex;
+  align-items: flex-end;
+  margin-left: 15px; /* separación del campo Hasta */
+}
+    
+    .filtro-item {
+    display: flex;
+    flex-direction: column;
+    }
+    
+    
+    .filtro-item input,
+    .filtro-item select,
+    .filtro-item button {
+    padding: 6px 4px;
+    font-size: 14px;
+    margin-top: 4px;
+    }
+    
+    
+    .filtro-item.boton button {
+    background: #2c3e50;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 4px;
+    }
+    
+    
+    .resultados {      
+      margin-top: 20px;
+    }
+    
+    
+    .tabla-resultados {
+        border-collapse: collapse;
+        width: 100%;
+        align-self: flex-start;
+        border-spacing: 0;            
+    }
+    
+    .tabla-resultados thead {
+      position: sticky;
+      top: 0;
+      z-index: 5;
+    }
+
+    .tabla-resultados thead tr {
+        background-color: #2c3e50;   /* azul oscuro */
+        color: white;
+    }
+
+    .tabla-resultados th,
+    .tabla-resultados td {
+    border: 1px solid #ccc;
+    padding: 8px;
+    text-align: center;
+    }
+    
+    
+/* Contenedor general del gráfico */
+.grafico-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: 30px;
+  }
+  
+  /* ESTE ES EL QUE LE DA TAMAÑO REAL AL CANVAS */
+  .grafico-wrapper {
+    width: 70%;
+    height: 40%;
+    position: relative;
+  }
+  
+  /* Chart.js necesita el canvas con width/height */
+  .grafico-wrapper canvas {
+    width: 100% !important;
+    height: 100% !important;
+  }
+
+  .error-msg {
+    color: #d9534f;
+    font-size: 0.85em;
+    margin-top: 5px;
+    display: block;
+}
+ 
+.boton {
+  background-color: #3182d3; /* azul vistoso */
+  color: white;
+  padding: 6px 12px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background-color 0.2s ease;
+}
+
+.boton:hover {
+  background-color: #125ca1; /* tono más oscuro al pasar el mouse */
+}
+
+.filtros-container > div:not(.filtro-item) {
+  display: flex;
+  align-items: center;   /* ← centra verticalmente */
+}
+
+
+/* Contenedor con scroll solamente vertical */
+
+/* Scroll solo en la tabla */
+.tabla-scroll {
+  max-height: 540px;
+  overflow-y: auto;
+  border: 1px solid #ccc;
+  width: 100%;
+  display: block;
+  flex: 0 0 auto;
+}
+
+
+/* Fija el encabezado */
+.tabla-resultados thead th {
+  position: sticky;
+  top: 0;
+  background-color: #2c3e50;
+  color: white;
+  z-index: 10;
+}
+
+.tabla-scroll-container {
+  max-height: 400px;  /* Ajusta la altura que quieras */
+  overflow-y: auto;
+  overflow-x: hidden;
+  border: 1px solid #ccc;
+}
+
+/* Para evitar que un overflow hidden global bloquee el scroll */
+:host ::ng-deep .tabla-scroll-container {
+  overflow-y: auto !important;
+}
+
+.tabla-resultados th {
+  position: sticky;
+  top: 0;
+  background: #f2f2f2;
+  z-index: 10;
+}
+
+
+#modalCarga, #modalMensaje {
+  display: none;
+  position: fixed; /* ✅ usar fixed para posicionarse sobre toda la pantalla */
+  z-index: 2000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(2px);
+}
+
+#modalContenido, #modalMensajeContenido {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%); /* ✅ centrado vertical y horizontal */
+  background: white;
+  padding: 20px 40px;
+  border-radius: 8px;
+  font-family: Arial, sans-serif;
+  font-size: 16px;
+  text-align: center;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+}
+
+#modalMensajeContenido button {
+  margin-top: 15px;
+  padding: 6px 14px;
+  border: none;
+  background: #2c3e50;
+  color: white;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+#modalMensajeContenido button:hover {
+  background: #1a252f;
+}
+
+
+
+.btn-editar {
+  cursor: pointer;
+  padding: 2px 6px;
+  background: #ffffff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+}
+
+
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 3000;
+}
+
+.modal-dialog {
+  background: white;
+  padding: 0;
+  border-radius: 8px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  max-width: 1100px;
+  width: 96%;
+}
+
+.link-plan {
+  color: #3182d3;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.link-plan:hover {
+  color: #1a252f;
+}
+
+/* =========================
+   PESTAÑAS TABLA / GRÁFICO
+   ========================= */
+
+.tabs-container {
+  display: flex;
+  gap: 6px;
+  margin-top: 15px;
+  border-bottom: 2px solid #ccc;
+}
+
+.tab {
+  padding: 8px 16px;
+  background: #f5f5f5;
+  border: 1px solid #ccc;
+  border-bottom: none;
+  cursor: pointer;
+  border-radius: 6px 6px 0 0;
+  font-weight: 600;
+  color: #333;
+}
+
+.tab.activo {
+  background: #ffffff;
+  color: #3182d3;
+  border-bottom: 2px solid white;
+}
+

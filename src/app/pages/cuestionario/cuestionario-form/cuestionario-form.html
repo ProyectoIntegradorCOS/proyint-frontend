@@ -1,0 +1,101 @@
+<div class="form-card" (click)="$event.stopPropagation()">
+
+  <!-- Header -->
+  <header class="form-header">
+    <h2 class="modal-titulo-principal">
+    {{ modo === 'edicion' ? 'Editar Cuestionario' : 'Registrar Cuestionario' }}
+  </h2>
+    <button type="button" class="btn-cerrar" (click)="cancelar()">X</button>
+  </header>
+
+  <form>
+
+    <!-- Nombre -->
+    <div class="form-group">
+      <label for="nombre">Nombre (*)</label>
+      <div class="input-container">
+        <input
+          id="nombre"
+          type="text"
+          [(ngModel)]="form.nombre"
+          name="nombre"
+          maxlength="200"
+          style="text-transform: uppercase;"
+          #nombreInput
+          [disabled]="!(modo === 'registro' || mostrarEditar)"
+        />
+      </div>
+    </div>
+
+    <!-- Descripción -->
+    <div class="form-group">
+      <label for="descripcion">Descripción</label>
+      <div class="input-container">
+        <textarea
+          id="descripcion"
+          [(ngModel)]="form.descripcion"
+          name="descripcion"
+          maxlength="500"
+          style="text-transform: uppercase;"
+          [disabled]="!(modo === 'registro' || mostrarEditar)"
+        ></textarea>
+      </div>
+    </div>
+
+    <!-- Botones -->
+    <div class="form-actions">
+      @if(modo === 'registro' || mostrarEditar) {
+      <button type="button" class="boton" (click)="confirmarGuardar()">
+        {{ form.id ? 'Actualizar' : 'Registrar' }}
+      </button>
+      }
+
+      <button type="button" class="boton" (click)="cancelar()">
+        Cerrar
+      </button>
+    </div>
+
+    <hr />
+
+
+    <div *ngIf="form.id === 0" class="obligatorios-msg">
+      Debe guardar primero el cuestionario para registrar preguntas.
+    </div>
+
+    <app-pregunta-list
+      *ngIf="form.id > 0"
+      [idCuestionario]="form.id">
+    </app-pregunta-list>
+
+    <span class="obligatorios-msg">(*) : Campo obligatorio.</span>
+
+  </form>
+</div>
+
+
+<!-- MODAL MENSAJE -->
+<div class="modal-backdrop" *ngIf="mostrarModalMensaje">
+  <div class="modal-contenido">
+    <h3 class="modal-titulo">Mensaje</h3>
+    <p class="modal-mensaje">{{ mensajeModal }}</p>
+
+    <div class="modal-actions">
+      <button class="boton" (click)="cerrarMensajeModal()">Aceptar</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL CONFIRMACIÓN -->
+<div class="modal-backdrop" *ngIf="mostrarModalConfirmacion">
+  <div class="modal-contenido">
+    <h3 class="modal-titulo">Confirmación</h3>
+    <p class="modal-mensaje">
+      ¿Desea guardar los datos del cuestionario?
+    </p>
+
+    <div class="modal-actions">
+      <button class="boton" (click)="aceptarGuardar()">Aceptar</button>
+      <button class="boton" (click)="cancelarGuardar()">Cancelar</button>
+    </div>
+  </div>
+</div>

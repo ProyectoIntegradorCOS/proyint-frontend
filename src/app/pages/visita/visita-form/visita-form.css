@@ -1,0 +1,391 @@
+.form-container {
+    padding: 20px;
+    font-family: Arial;
+}
+
+h2 {
+    margin-top: 0;
+    text-align: center;
+    background: #2c3e50;
+    color: white;
+    padding: 8px;
+    border-radius: 4px;
+    font-size: 18px;
+}
+
+label {
+    display: block;
+    margin-top: 10px;
+    font-weight: bold;
+}
+
+select,
+input[type="date"],
+textarea {
+    width: 100%;
+    padding: 6px;
+    margin-top: 4px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.acciones {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 18px;
+}
+
+.btn-guardar {
+    background: #2c3e50;
+    color: white;
+    padding: 6px 14px;
+    border: none;
+    border-radius: 4px;
+}
+
+.btn-cerrar {
+    background: #777;
+    color: white;
+    padding: 6px 14px;
+    border: none;
+    border-radius: 4px;
+}
+
+.btn-guardar:hover { background: #1a252f; }
+.btn-cerrar:hover { background: #555; }
+
+.error {
+    color: red;
+    font-size: 13px;
+    margin-top: 4px;
+}
+
+
+/* Botones de la tabla de visitas */
+
+
+.tabla-visitas table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 8px;
+}
+
+.tabla-visitas th, .tabla-visitas td {
+    border: 1px solid #ccc;
+    padding: 4px 6px;   /* ↓ altura */
+    font-size: 13px;    /* ↓ texto */
+    text-align: left;
+}
+
+h3 {
+    margin-top: 12px;
+    text-align: left;
+    background: #95a5a6; /* color más suave */
+    color: white;
+    padding: 6px;
+    border-radius: 4px;
+    font-size: 16px;
+}
+
+
+
+
+.modal-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Fondo oscuro */
+    display: flex;
+    justify-content: center; /* Centrado horizontal */
+    align-items: center; /* Centrado vertical */
+    z-index: 3000; /* Asegura que esté por encima de todo */
+}
+
+.modal-contenido {
+    background-color: white;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    max-height: 90vh;
+    overflow-y: auto;
+    min-width: 350px;
+  }
+
+ .modal-titulo {
+  margin-top: 0;
+  margin-bottom: 12px;
+  padding: 8px 12px;
+  background: #2c3e50;   /* mismo color que los th */
+  color: white;
+  border-radius: 4px;
+  font-size: 16px;
+}
+
+
+.modal-mensaje {
+    margin: 20px 0;
+  }
+
+  /* [CHANGE][autor: cormenos@onp.gob.pe][fecha: 2026-01-16 10:42 UTC-5 (Lima)][desc: Soporta MaterialLocalizations para es_PE/es_ES (historial por fecha)][obj: VisitaFormComponent respuestas cuestionario estilos] */
+  .seccion-respuestas {
+    margin-top: 16px;
+    padding-top: 10px;
+    border-top: 1px solid #eee;
+  }
+
+  .tabla-respuestas {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 8px;
+    font-size: 13px;
+  }
+
+  .tabla-respuestas th,
+  .tabla-respuestas td {
+    border: 1px solid #ccc;
+    padding: 6px 8px;
+    text-align: left;
+  }
+  
+  .modal-actions {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    padding-top: 15px;
+    border-top: 1px solid #eee;
+  }
+
+  .btn-modal {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+  }
+
+  .btn-modal[disabled] {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+
+
+  /* Scroll vertical para la tabla de visitas */
+.tabla-scroll {
+    max-height: 300px;       /* ajusta según tu diseño */
+    overflow-y: auto;
+    margin-top: 8px;
+}
+
+/* Header fijo */
+.tabla-scroll thead th {
+    position: sticky;
+    top: 0;
+    background: #95a5a6;     /* mismo color que tu h3 */
+    z-index: 2;
+}
+
+/* Evita que el header se vea "cortado" */
+.tabla-scroll thead th {
+    border-bottom: 2px solid #ccc;
+}
+
+/* Inputs dentro de la tabla */
+.tabla-visitas input[type="text"],
+.tabla-visitas input[type="time"] {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.destino-cell {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+
+
+
+.destino-top {
+    display: grid;
+    grid-template-columns: 1fr auto auto;
+    gap: 6px;
+    align-items: center;
+}
+
+.destino-top button {
+    padding: 4px 8px;
+}
+
+
+
+/* Ancho de las columnas */
+
+.destino-columna {
+
+    /* control de ancho de la columna */
+    width: 260px;
+    min-width: 260px;
+    max-width: 260px;
+
+    /* evita que se desborde */
+    overflow: hidden;
+}
+
+.direccion-columna {
+
+   /* control de ancho de la columna */
+   width: 300px;
+   min-width: 300px;
+   max-width: 300px;
+
+   /* evita que se desborde */
+   overflow: hidden;
+}
+
+.hora-columna {
+
+   /* control de ancho de la columna */
+   width: 90px;
+   min-width: 90px;
+   max-width: 90px;
+
+   /* evita que se desborde */
+   overflow: hidden;
+}
+
+
+.pv-columna {
+
+    /* control de ancho de la columna */
+    width: 95px;
+    min-width: 95px;
+    max-width: 95px;
+ 
+    /* evita que se desborde */
+    overflow: hidden;
+ }
+
+/* Para el ancho de algunos campos */
+.campo-corto {
+    width: 500px;
+    max-width: 100%;
+}
+
+input[type="date"].campo-corto {
+    width: 260px;
+    max-width: 100%;
+    box-sizing: border-box;
+    display: inline-block;
+}
+
+
+.fila-label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.fila-label label {
+    margin: 0;
+    min-width: 140px;   /* ancho fijo de la etiqueta */
+    text-align: left; /* alineación prolija */
+}
+
+
+.boton {
+    background-color: #3182d3; /* azul vistoso */
+    color: white;
+    padding: 6px 12px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background-color 0.2s ease;
+  }
+
+.boton:hover {
+    background: #1a252f;
+}
+
+
+.estado-link {
+    color: #1a5fb4;
+    cursor: pointer;
+    text-decoration: underline;
+    font-weight: 500;
+  }
+  
+  .estado-link:hover {
+    color: #0b3d91;
+  }
+
+  
+  .col-acciones {
+    width: 115px;
+    max-width: 115px;
+}
+
+.acciones-contenedor {
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+}
+
+.icono-accion {
+    width: 26px;
+    height: 22px;
+    font-size: 16px;
+    line-height: 1;
+    padding: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.tabla-visitas thead th {
+    padding: 5px 6px;
+    font-size: 13px;
+}
+
+.tabla-visitas th,
+.tabla-visitas td {
+    padding: 4px 6px;   /* ↓ altura */
+    font-size: 13px;    /* ↓ texto */
+}
+
+.tabla-visitas input[type="text"],
+.tabla-visitas input[type="time"],
+.tabla-visitas select {
+    padding: 3px 4px;
+    height: 26px;
+    font-size: 13px;
+}
+
+
+.div-agregarfila {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 6px;
+}
+
+
+.tabla-respuestas thead th {
+  background-color: #667483;  /* azul oscuro */
+  color: white;
+  font-weight: bold;
+}
+
+
+.modal-contenido.modal-detalle {
+  max-width: 450px;   /* ajusta a tu gusto: 900px / 1100px */
+  width: 90%;          /* responsive */
+}
+
+.modal-contenido.modal-detalle {
+  padding: 16px 20px;   /* antes era 30px */
+}

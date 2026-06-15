@@ -1,0 +1,432 @@
+.visita-masivo {
+  background: white;
+  padding: 24px;
+  border-radius: 10px;
+  max-width: 1200px;
+  width: 98%;
+
+  /* 🔑 CLAVE */
+  max-height: 85vh;
+  display: flex;
+  flex-direction: column;
+  flex: none;  /* evita que el contenedor se estire por contenido externo */
+
+  position: relative; /* si quieres controlar z-index */
+  z-index: 1000;
+}
+
+/* ===== CABECERA ===== */
+.modal-header {
+  background: #2c3e50;
+  color: #ffffff;
+  padding: 10px;
+  margin: -24px -24px 16px;
+  border-radius: 10px 10px 0 0;
+  text-align: center;
+}
+
+.modal-header h3 {
+  margin: 0;
+  font-size: 16px;
+}
+
+.modal-mensaje {
+  font-size: 14px;
+  color: #333;
+  font-weight: 600; 
+  margin: 0;           /* 🔑 elimina márgenes heredados del <p> */
+  margin-bottom: 8px; /* separación con el input file */
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: center;
+  gap: 20px; /* ← separación entre botones */
+  margin-top: 15px;
+}
+
+
+/* ===== BOTÓN AGREGAR ===== */
+.btn-add {
+  margin: 12px 0;
+  background: #3182d3;
+  color: white;
+  padding: 6px 12px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+/* ===== TABLA ===== */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+th {
+  background: #2c3e50;
+  color: white;
+  padding: 6px;
+  text-align: left;
+}
+
+td {
+  border: 1px solid #ccc;
+  padding: 6px;
+}
+
+input, select {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 4px;
+}
+
+/* ===== ACCIONES ===== */
+.acciones {
+  display: flex;          /* 🔑 fuerza una sola fila */
+  gap: 4px;               /* espacio entre botones */
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;    /* evita saltos */
+}
+
+.acciones button {
+  margin-right: 4px;
+  cursor: pointer;
+}
+
+.danger {
+  color: red;
+}
+
+/* ===== FOOTER ===== */
+.modal-footer {
+  display: flex;
+  justify-content: center;   /* centra los botones */
+  gap: 12px;                 /* separación entre botones */
+  margin-top: 16px;
+}
+
+.modal-footer {
+  padding: 8px 20px;
+}
+
+
+.tabla-scroll {
+  overflow-y: auto;
+  max-height: 45vh;      /* 🔧 ajusta según gusto */
+  border: 1px solid #ccc;
+  margin-top: 4px;     /* 🔑 reduce separación con el bloque anterior */
+}
+
+/* Header fijo */
+.tabla-scroll thead th {
+  position: sticky;
+  top: 0;
+  background: #95a5a6;  /* 🔑 fondo obligatorio */
+  color: black;
+  z-index: 2;
+}
+
+table th,
+table td {
+  padding: 3px 6px;   /* 🔑 antes 6px */
+  font-size: 13px;
+  vertical-align: middle;
+}
+
+table input,
+table select {
+  padding: 2px 4px;     /* 🔑 reduce altura */
+  font-size: 13px;
+  height: 26px;         /* 🔑 controla altura */
+  line-height: 1.2;
+}
+
+table input[type="date"],
+table input[type="time"] {
+  padding: 1px 4px;
+  height: 26px;
+}
+
+table thead th {
+  padding: 4px 6px;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.acciones button {
+  padding: 2px 6px;
+  font-size: 14px;
+  line-height: 1;
+}
+
+select {
+  width: 100%;
+  padding: 2px 4px;
+  font-size: 13px;
+}
+
+
+.acciones-superior {
+  display: flex;
+  justify-content: flex-start; /* o center si lo prefieres */
+  margin: 8px 0;
+}
+
+.btn-add {
+  width: auto;               /* 🔑 evita que se estire */
+  padding: 4px 10px;         /* 🔑 más compacto */
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  border-radius: 4px;
+  border: 1px solid #3182d3;
+  background: #3182d3;
+  color: #fff;
+  white-space: nowrap;      /* 🔑 evita que se parta */
+}
+
+.btn-add:hover {
+  background: #1a252f;
+}
+
+
+.fila-agregar {
+  display: flex;
+  align-items: center;      /* 🔑 centra verticalmente */
+  gap: 12px;                /* espacio entre texto y botón */
+  margin: 8px 0 12px;
+  margin: 4px 0 6px;   /* 🔑 menos espacio arriba y abajo */
+  margin-bottom: 2px; /* 🔑 casi pegado a la tabla */
+}
+
+.fila-agregar .modal-mensaje {
+  margin: 0;                /* 🔑 elimina salto vertical */
+  font-size: 14px;
+  color: #333;
+  flex: 1;                  /* 🔑 el texto ocupa el espacio */
+}
+
+
+
+.tabla-scroll table {
+  margin-top: 0;
+}
+
+.tabla-scroll {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+
+.col-numero {
+  width: 25px;
+  text-align: center;
+  font-weight: 600;
+  background: #f5f5f5;
+}
+
+
+/* Para los modales */
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* Fondo oscuro */
+  display: flex;
+  justify-content: center; /* Centrado horizontal */
+  align-items: center; /* Centrado vertical */
+  z-index: 3000; /* Asegura que esté por encima de todo */
+}
+
+
+.modal-contenido {
+  background-color: white;
+  padding: 30px;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  max-height: 90vh;
+  overflow-y: auto;
+  min-width: 350px;
+}
+
+.destino-modal {
+  min-width: 900px;      /* más ancho que el principal */
+  max-width: 95vw;
+  max-height: 90vh;      /* limitar altura */
+  overflow-y: auto;      /* scroll solo en este modal */
+}
+
+.modal-titulo {
+  border-bottom: 2px solid #eee;
+  padding-bottom: 10px;
+  margin-top: 0;
+  color: #333;
+}
+
+.destino-buscar {
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  gap: 10px;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.boton {
+  background-color: #3182d3; /* azul vistoso */
+  color: white;
+  padding: 6px 12px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background-color 0.2s ease;
+}
+
+.boton:hover {
+  background: #1a252f;
+}
+
+.btn-modal {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.btn-modal[disabled] {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+
+
+.destino-wrapper {
+  display: flex;
+  align-items: center;  /* centra input y botones verticalmente */
+  gap: 4px;             /* separación entre input y botones */
+}
+
+.destino-wrapper input {
+  flex: 1;              /* ocupa todo el espacio disponible */
+  min-width: 0;         /* evita overflow */
+  height: 27px;         /* altura estándar del input */
+  padding: 2px 4px;
+  font-size: 13px;
+}
+
+.destino-btn {
+  flex: none;           /* botones mantienen su tamaño natural */
+  padding: 2px 6px;     /* más compactos */
+  font-size: 12px;      /* más pequeños que el input */
+  line-height: 1;
+  cursor: pointer;
+}
+
+
+/* Columna más estrecha */
+.plantilla-col {
+  width: 88px;       /* ancho de la columna, ajusta según necesidad */
+  min-width: 88px;   /* evita que se haga demasiado pequeña */
+}
+
+/* Input dentro de la columna */
+.plantilla-col input {
+  width: 100%;        /* ocupa todo el ancho disponible de la columna */
+  padding: 2px 4px;   /* más compacto */
+  font-size: 12px;    /* más pequeño que otros inputs */
+  height: 24px;       /* altura más reducida */
+  box-sizing: border-box;
+}
+
+
+
+
+/* Destino incompleto */
+.destino-incompleto {
+  background-color: #fff3cd;   /* amarillo suave */
+  border: 1px solid #ffc107;
+}
+
+/* Para que el input también se note */
+.destino-incompleto input {
+  background-color: #fff3cd;
+  font-weight: 600;
+}
+
+
+
+
+/* CONTENEDOR */
+.bloque-carga {
+  border: 1px solid #cfd8dc;
+  border-radius: 6px;
+  margin-bottom: 12px;
+  background-color: #fafafa;
+}
+
+/* HEADER */
+.bloque-carga-titulo {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 12px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #2c3e50;
+  background-color: #eceff1;
+  border-radius: 6px 6px 0 0;
+}
+
+/* CLICK */
+.bloque-carga-titulo.clickable {
+  cursor: pointer;
+  user-select: none;
+}
+
+.bloque-carga-titulo:hover {
+  background-color: #e0e0e0;
+}
+
+/* ICONO */
+.icono-toggle {
+  font-size: 14px;
+}
+
+/* CONTENIDO */
+.bloque-carga-contenido {
+  padding: 12px;
+}
+
+
+
+#modalCarga, #modalMensaje {
+  display: none;
+  position: fixed; /* ✅ usar fixed para posicionarse sobre toda la pantalla */
+  z-index: 2000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(2px);
+}
+
+#modalContenido, #modalMensajeContenido {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%); /* ✅ centrado vertical y horizontal */
+  background: white;
+  padding: 20px 40px;
+  border-radius: 8px;
+  font-family: Arial, sans-serif;
+  font-size: 16px;
+  text-align: center;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+}

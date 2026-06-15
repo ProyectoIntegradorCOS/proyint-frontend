@@ -1,0 +1,64 @@
+.opcion-card {
+  background: #ffffff;
+  border: 1px solid #dcdcdc;
+  padding: 12px;
+  border-radius: 6px;
+  margin-top: 10px;
+}
+
+h4 {
+  margin: 0 0 10px;
+  font-size: 14px;
+  color: #2c3e50;
+}
+
+label {
+  display: block;
+  font-size: 12px;
+  font-weight: 600;
+  margin-top: 8px;
+  color: #555;
+}
+
+input {
+  width: 100%;
+  padding: 6px 8px;
+  margin-top: 4px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 13px;
+}
+
+.acciones {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.btn-guardar {
+  background: #3182d3;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.btn-guardar:hover {
+  background: #1f6bb5;
+}
+
+.btn-cancelar {
+  background: #aaa;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.btn-cancelar:hover {
+  background: #888;
+}

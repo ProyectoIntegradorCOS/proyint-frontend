@@ -1,0 +1,268 @@
+:host {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal-contenido {
+  background: #f8fafc;
+  border-radius: 8px;
+  padding: 20px;
+  width: 550px;
+  max-width: 94vw;
+  box-shadow: 0 15px 40px rgba(0,0,0,0.25);
+}
+
+h3 {
+  margin: 0 0 12px;
+  font-size: 16px;
+  color: #2c3e50;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 5px;
+}
+
+h4 {
+  margin-top: 15px;
+  font-size: 14px;
+  color: #555;
+}
+
+input, select {
+  width: 100%;
+  padding: 8px 10px;
+  margin-top: 8px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 13px;
+  box-sizing: border-box;
+}
+
+.opcion-row {
+  display: grid;
+  grid-template-columns: 1fr 160px;
+  gap: 10px;
+  margin-top: 8px;
+}
+
+.btn-agregar-opcion {
+  margin-top: 10px;
+  background: #6f42c1;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.btn-agregar-opcion:hover {
+  background: #59339d;
+}
+
+.botones {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    padding-top: 20px;
+    border-top: 1px solid #e0e0e0;
+    margin-top: 20px;
+}
+
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+}
+
+.modal-msg {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  width: 320px;
+  text-align: center;
+  box-shadow: 0 10px 30px rgba(0,0,0,.3);
+}
+
+.modal-msg p {
+  margin-bottom: 20px;
+  font-size: 14px;
+}
+
+.modal-botones {
+  display: flex;
+  justify-content: space-around;
+}
+
+.modal-titulo {
+  margin: 0 0 12px;
+  font-size: 15px;
+  font-weight: 600;
+  color: #2c3e50;
+  background-color: #9fb5c7;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 6px;
+  text-align: center;
+}
+
+
+
+.boton {
+    background-color: #3182d3; /* azul vistoso */
+    color: white;
+    padding: 6px 12px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background-color 0.2s ease;
+  }
+
+.boton:hover {
+    background: #1a252f;
+}
+
+.campo-obligatorio {
+  display: flex;
+  align-items: center;       /* centra verticalmente */
+  gap: 20px;
+  margin-top: 12px;
+}
+
+/* Texto de la pregunta */
+.obligatorio-label {
+  font-size: 13px;
+  color: #2c3e50;
+  min-width: 140px;          /* fuerza alineación con inputs */
+  display: flex;
+  align-items: center;
+  height: 36px;              /* igual que input */
+}
+
+/* Contenedor de radios */
+.opciones-radio {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  height: 36px;              /* misma altura que input */
+}
+
+/* Cada radio + texto */
+.opciones-radio label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+/* Ajuste fino del radio */
+.opciones-radio input[type="radio"] {
+  margin: 0;
+  transform: translateY(1px);  /* corrige desalineación del círculo */
+}
+
+
+.opcion-row {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.btn-eliminar-opcion {
+  background: #dc3545;
+  border: none;
+  color: white;
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.btn-eliminar-opcion:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.bloque-opciones {
+  border: 1px solid #cfd8e3;
+  border-radius: 6px;
+  padding: 12px;
+  margin-top: 15px;
+  background-color: #f4f7fb;
+}
+
+.bloque-opciones h4 {
+  margin: -12px -12px 12px -12px; /* se extiende hasta los bordes del bloque */
+  padding: 8px 12px;
+  background-color: #dbe7f3;   /* azul suave */
+  color: #2c3e50;
+  font-size: 13px;
+  font-weight: 600;
+  border-radius: 6px 6px 0 0;   /* redondea arriba */
+}
+
+
+/* Contenedor de la tabla con scroll vertical */
+.tabla-opciones-wrapper {
+  max-height: 250px; /* ajustable según prefieras */
+  overflow-y: auto;
+  margin-top: 10px;
+  border: 1px solid #cfd8e3;
+  border-radius: 6px;
+  background-color: #f4f7fb;
+}
+
+/* Tabla de opciones */
+.tabla-opciones {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.tabla-opciones th,
+.tabla-opciones td {
+  padding: 6px 8px;
+  text-align: left;
+  font-size: 13px;
+  border-bottom: 1px solid #cfd8e3;
+}
+
+/* Fila del encabezado fija */
+.tabla-opciones thead th {
+  position: sticky;
+  top: 0;
+  background-color: #dbe7f3;
+  z-index: 1;
+  font-weight: 600;
+}
+
+
+.campo-formulario {
+  display: flex;
+  align-items: center; /* centra verticalmente label y select */
+  gap: 10px;           /* separación entre label y select */
+  margin-top: 12px;    /* margen superior similar a otros campos */
+}
+
+.campo-formulario label {
+  min-width: 150px;    /* ancho fijo para alinear con otros inputs */
+  font-size: 13px;
+  color: #2c3e50;
+}
+

@@ -1,0 +1,308 @@
+<div class="bandeja-destino">
+  <header>
+    <h1>Catálogo de destinos</h1>
+  </header>
+
+  <div class="filtros">
+    Destino:
+    <input type="text"            
+           [(ngModel)]="filtroDestino" style="text-transform: uppercase;"
+           (keyup.enter)="buscar()" />
+
+    Dirección:
+    <input type="text" 
+           [(ngModel)]="filtroDireccion" style="text-transform: uppercase;"
+           (keyup.enter)="buscar()" />
+
+    <!--
+    Categoría:
+    <input type="text" placeholder="Ministerio / Municipalidad / GORE ..." [(ngModel)]="categoria" />
+    -->
+
+    <!--
+    Estado de registro:
+    <select [(ngModel)]="activo">
+      <option [ngValue]="null">Todos</option>
+      <option [ngValue]="true">Activo</option>
+      <option [ngValue]="false">Inactivo</option>
+    </select>
+    -->
+    <!--
+    Estado:
+    <select [(ngModel)]="ubicabilidad">
+      <option value="">-- Todos --</option>
+      <option value="CASO ESPECIAL">CASO ESPECIAL</option>
+      <option value="INUBICABLE">INUBICABLE</option>        
+      <option value="CONFORME">CONFORME</option>
+      <option value="NO CONFORME">NO CONFORME</option>
+    </select>
+    -->
+
+    <button class="boton" (click)="buscar()">Buscar</button>
+    <!-- <button class="boton" (click)="limpiarFiltros()">🧹 Limpiar</button> -->
+  </div>
+
+  <!-- Resumen de resultados -->
+  <div class="resumen-resultados">
+
+    @if(totalRegistros == 0) {
+      <span>
+        No se encontraron destinos
+      </span>
+    }
+
+    @if(totalRegistros == 1) {
+      <span>
+        Se encontró 1 destino
+      </span>
+    }
+
+    @if(totalRegistros > 1) {
+    <span>
+      Se encontraron <strong>{{ totalRegistros }}</strong> destinos
+    </span>
+    }
+    
+    @if (mostrarNuevo) {
+    <div class="acciones-derecha">
+      <!-- <button class="boton" type="button" (click)="exportarExcel()">Exportar</button> -->
+      <button class="boton" (click)="abrirRegistro()">Nuevo</button>
+      <button class="boton" type="button" (click)="descargarPlantilla()">Descargar plantilla</button>            
+      <button class="boton" type="button" (click)="mostrarModalCargaXls()">Cargar plantilla</button>            
+    </div>    
+    }
+
+  </div>
+
+
+  <div class="tabla-contenedor">
+    <table>
+      <thead>
+        <tr>
+          <th>#</th>
+          <th (click)="ordenarPor('nombre')">Destino</th>
+          <!-- <th (click)="ordenarPor('categoria')">Categoría</th> -->
+          <th>Dirección</th>
+          <!-- <th (click)="ordenarPor('precision')">Precisión</th> -->
+          <th>Ubicabilidad</th>
+          <th>Estado ONP</th>
+          <th>Fe.Actualización</th>
+          @if (mostrarEditar) {
+          <th>Editar</th>
+          }
+          @if (!mostrarEditar) {
+          <th>Ver</th>
+          }
+          @if (mostrarEliminar) {
+          <th>Eliminar</th>
+          }
+        </tr>
+      </thead>
+      <tbody>
+        @for (d of destinos; let i = $index; track $index) {
+        <tr>
+          <td>{{ ((paginaActual - 1) * tamanioPagina) + i + 1 }}</td>              
+          <td>{{ d.nombre }}</td>
+          <!-- <td>{{ d.categoria }}</td> -->
+          <td>{{ d.direccion || '-' }}</td>
+          <td>
+              {{ d.ubicabilidadOnp || '-' }}
+          </td>
+          <td>
+              {{ d.estadoOnp || '-' }}
+          </td>
+          <td>
+              {{ d.fechaActualizacionOnp | date:'dd/MM/yyyy' }}
+          </td> 
+          <!--
+          <td>
+              {{ d.precision || '-' }}
+          </td>
+          -->
+          
+          @if (mostrarEditar) {
+          <td><span class="icono-editar" (click)="abrirEdicion(d)" title="Editar">✏️</span></td>
+          }
+          @if (!mostrarEditar) {
+          <td><span class="icono-editar" (click)="abrirEdicion(d)" title="Ver">🔎</span></td>
+          }
+          @if (mostrarEliminar) {
+          <td><span class="icono-eliminar" (click)="confirmarEliminar(d)">🗑️</span></td>
+          }
+        </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+
+
+<!-- Paginación -->
+<div class="paginacion">
+  <div class="controles">
+
+    <!-- Primera página -->
+    <button
+      (click)="irPagina(1)"
+      [disabled]="paginaActual === 1"
+      title="Primera página">
+      ⏮
+    </button>
+  
+    <button
+      (click)="irPagina(paginaActual - 1)"
+      [disabled]="paginaActual === 1"
+      title="Anterior">
+      ←
+    </button>
+
+    <span>
+      Página
+      <select
+        [(ngModel)]="paginaActual"
+        (change)="onCambioPagina()"
+        class="select-pagina">
+        <option
+          *ngFor="let p of paginas"
+          [value]="p">
+          {{ p }}
+        </option>
+      </select>
+      de {{ totalPaginas }}
+    </span>
+
+    <button
+      (click)="irPagina(paginaActual + 1)"
+      [disabled]="paginaActual === totalPaginas"
+      title="Siguiente">
+      →
+    </button>
+
+    <!-- Última página -->
+    <button
+      (click)="irPagina(totalPaginas)"
+      [disabled]="paginaActual === totalPaginas"
+      title="Última página">
+      ⏭
+    </button>
+
+  </div>
+</div>
+
+
+
+  <div class="modal-backdrop" *ngIf="mostrarModalConfirmaEliminacion">
+    <div class="modal-contenido">
+      <h3 class="modal-titulo">Confirmación</h3>
+      <p class="modal-mensaje">¿Desea eliminar el destino?</p>
+      <div class="modal-actions">
+        <button class="btn-modal" (click)="aceptarEliminar()">Aceptar</button>
+        <button class="btn-modal" (click)="cancelarEliminar()">Cancelar</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-backdrop superior" *ngIf="mostrarMensaje">
+    <div class="modal-contenido">
+      <h3 class="modal-titulo">Mensaje</h3>
+      <p class="modal-mensaje">{{ mensajeTexto }}</p>
+      <div class="modal-actions">
+        <button class="btn-modal" (click)="cerrarModalMensaje()">Aceptar</button>
+      </div>
+    </div>
+  </div>
+
+
+
+
+  <!-- Modal para cargar el archivo XLS de destinos -->
+  <div class="modal-backdrop" *ngIf="mostrarCargaXlsModal">
+    <div class="modal-carga">
+      <h3 class="modal-titulo">
+        Carga masiva de destinos
+      </h3>
+      
+      <p class="modal-mensaje">
+        Seleccione la plantilla que tiene los datos para la carga masiva de destinos.
+      </p>
+
+      <input type="file"  #archivoInput accept=".xlsx" (change)="onArchivoSeleccionado($event)" />          
+      
+      <div class="modal-actions mt-20">
+        <button class="boton" (click)="importarExcel()">
+            Cargar
+          </button>
+  
+        <button class="boton" (click)="cerrarModalCargaXls()">
+          Cancelar
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal de procesando -->
+  <div class="modal-backdrop superior" *ngIf="mostrarCarga">
+    <div class="modal-contenido">
+      <p class="modal-mensaje">⏳ Cargando, por favor espere…</p>
+    </div>
+  </div>
+
+  <!-- MODAL DE MENSAJE DE CIERRE -->
+  <div class="modal-backdrop" *ngIf="mostrarModalMensajeCierre">
+    <div class="modal-contenido">
+        <h3 class="modal-titulo">
+            Mensaje
+        </h3>
+
+        <p class="modal-mensaje">
+            {{mensajeCierreTexto}}
+        </p>
+
+        <div class="modal-actions">
+            <button class="boton" (click)="ocultarModalMensajeCierre()">
+                Aceptar
+            </button>
+        </div>
+    </div>
+  </div>
+
+
+  <div class="modal-backdrop" *ngIf="mostrarModalRestaurarImport">
+    <div class="modal-contenido">
+      <h3 class="modal-titulo">Carga masiva pendiente</h3>
+        <p class="modal-mensaje">Se detectó una carga masiva de destinos en proceso de una sesión anterior.
+          <br/><br/>
+          ¿Desea continuar monitoreándola o cancelarla?
+        </p>
+      <div class="modal-actions">
+        <button class="btn-modal" (click)="continuarImportacionPendiente()">Continuar</button>
+        <button class="btn-modal" (click)="cancelarImportacionPendiente()">Cancelar</button>
+      </div>
+    </div>
+  </div>
+
+
+  @if(mostrarImportComponent) {
+  <div class="modal-backdrop superior">
+    <div class="modal-contenido">
+      <app-import
+        [archivo]="archivoImport"
+        [jobIdExistente]="jobIdActivo"
+        (finalizado)="onImportFinalizado($event)">
+      </app-import>
+    </div>
+  </div>
+  }
+
+
+
+
+
+  <app-destino-form
+    *ngIf="mostrarModal"
+    [modo]="modoFormulario"
+    [destino]="destinoSeleccionado"
+    (guardado)="onDestinoGuardado($event)"
+    (cerrado)="cerrarModal()"
+  ></app-destino-form>
+  
+</div>

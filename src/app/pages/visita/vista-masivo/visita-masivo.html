@@ -1,0 +1,282 @@
+<div class="visita-masivo">
+
+    <div class="modal-header">
+        <h3>Carga masiva de planes de visitas</h3>
+    </div>
+
+
+    <div *ngIf="mostrarCargaArchivo" class="bloque-carga">
+
+        <!-- TÍTULO / HEADER (CLICKABLE) -->
+        <div
+          class="bloque-carga-titulo clickable"
+          (click)="toggleCarga()"
+        >
+          <span>Cargar con plantilla</span>
+      
+          <span class="icono-toggle">
+            {{ cargaExpandida ? '▾' : '▸' }}
+          </span>
+        </div>
+      
+        <!-- CONTENIDO COLAPSABLE -->
+        <div
+          class="bloque-carga-contenido"
+          *ngIf="cargaExpandida"
+        >
+          <p class="modal-mensaje">
+            Seleccione la plantilla que tiene los datos para la carga masiva de planes de visita.
+          </p>
+      
+          <input
+            #fileInput
+            type="file"
+            accept=".xlsx"
+            (change)="onExcelSeleccionado($event)"
+          />
+        </div>
+      
+      </div>
+
+      
+
+
+    <div class="fila-agregar">
+        <p class="modal-mensaje" *ngIf="!archivoFueImportado">Adicione las filas necesarias correspondiente a los planes de visita.</p> 
+        <p class="modal-mensaje" *ngIf="archivoFueImportado">Revise, y de ser necesario complete, los datos correspondientes a los planes de visita.</p>
+      
+        <button class="btn-add" (click)="agregarFila()">Agregar fila</button>
+    </div>
+  
+    <div class="tabla-scroll">
+        <table>
+        <thead>
+            <tr>
+            <th>#</th>
+            <th>Colaborador</th>
+            <th>Fecha</th>
+            <th>Destino</th>
+            <th>Dirección</th>
+            <th>Hora cita</th>
+            <th>Prioridad</th>
+            <th>Cód.PV</th>
+            <th>Eliminar</th>
+            </tr>
+        </thead>
+    
+        <tbody *ngIf="visitas.length > 0">
+            <tr *ngFor="let v of visitas; let i = index">
+                <td class="col-numero">
+                    {{ i + 1 }}
+                </td>
+
+                <td>
+                    <select [(ngModel)]="v.colaboradorId">
+                        <option value="0">-- Seleccione --</option>
+                        <option *ngFor="let c of listaPersonas" [value]="c.idUsuario">
+                        {{ c.usuario }}
+                        </option>                    
+                    </select>
+                </td>
+
+                <td>
+                    <input type="date" [(ngModel)]="v.fecha" [min]="fechaActual">
+                </td>
+
+                <td [class.destino-incompleto]="!v.validado">
+                    <div class="destino-wrapper">
+                      <input type="text" 
+                             #destinoInput
+                             [(ngModel)]="v.destinoNombre" 
+                             placeholder="Seleccione el destino" 
+                             maxlength="200"
+                             readonly
+                      >
+                      <button tabindex="-1"
+                          type="button"
+                          title="Seleccionar destino"
+                          (click)="abrirBusquedaDestino(i)"
+                          class="destino-btn"
+                      >🔎</button>
+                      <!--
+                      <button tabindex="-1"
+                          type="button"
+                          title="Quitar destino del catálogo"
+                          (click)="limpiarDestino(v)"
+                          [disabled]="!v.destinoId"
+                          class="destino-btn"
+                      >✖</button>
+                      -->
+
+                      @if(!v.validado) {
+                        <button tabindex="-1"
+                              type="button"
+                              [title]="v.mensajeValidacion || 'Validar destino'"
+                              (click)="mostrarModalEdicionDestino(v)"
+                              class="destino-btn"
+                          >✅</button>
+                        }                      
+                    </div>
+                </td>
+ 
+                <td>
+                    <input type="text"
+                        [(ngModel)]="v.direccion"
+                        placeholder="Dirección"
+                        maxlength="100"
+                        readonly
+                    >
+                </td>
+
+                <td>
+                    <input type="time" [(ngModel)]="v.horaCita"
+                        step="60"
+                        tabindex="-1"
+                        (keydown)="controlarEntradaHora($event)"
+                        onkeypress="return false"
+                        oninput="return false"
+                        onpaste="return false"
+                    >
+                </td>
+        
+                <td>
+                    <select [(ngModel)]="v.prioridad">
+                        <option value="">-- Seleccione --</option>
+                        <option *ngFor="let p of prioridades" [value]="p">{{ p }}</option>
+                    </select>                    
+                </td>
+        
+                <td class="plantilla-col">
+                    <input  type="text"
+                            [(ngModel)]="v.plantillaPv"
+                            placeholder="Código"
+                            maxlength="11"
+                        >
+                </td>
+        
+                <td class="acciones">
+                    <button class="danger" (click)="eliminarFila(i)">🗑</button>
+                </td>
+            </tr>
+        </tbody>
+        </table>
+    </div>
+
+    <div class="modal-footer">
+        <button class="boton" (click)="validar()">Aceptar</button>
+        <button class="boton" (click)="cerrarModal()">Cerrar</button>
+    </div>
+  
+</div>
+  
+
+
+<!-- MODAL DE MENSAJE -->
+<div class="modal-backdrop" *ngIf="mostrarModalMensaje">
+    <div class="modal-contenido">
+        <h3 class="modal-titulo">
+            Mensaje
+        </h3>
+
+        <p class="modal-mensaje">
+            {{mensajeModal}}
+        </p>
+
+        <div class="modal-actions">
+            <button class="boton" (click)="cerrarMensajeModal()">
+                Aceptar
+            </button>
+        </div>
+    </div>
+</div>
+
+
+<!-- MODAL DE CONFIRMACION AL IMPORTAR -->
+<div class="modal-backdrop" *ngIf="mostrarModalConfirmaImportar">
+    <div class="modal-contenido">
+        <h3 class="modal-titulo">
+            Confirmación
+        </h3>
+
+        <p class="modal-mensaje">
+            ¿Desea importar el archivo?
+        </p>
+
+        <div class="modal-actions">
+            <button class="boton" (click)="importarExcel()">
+                Aceptar
+            </button>
+
+            <button class="boton" (click)="cancelarImportacion()">
+                Cancelar
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- MODAL DE CONFIRMACION AL GRABAR -->
+<div class="modal-backdrop" *ngIf="mostrarModalConfirmaGuardar">
+    <div class="modal-contenido">
+        <h3 class="modal-titulo">
+            Confirmación
+        </h3>
+
+        <p class="modal-mensaje">
+            ¿Desea guardar los datos?
+        </p>
+
+        <div class="modal-actions">
+            <button class="boton" (click)="guardarMasivo()">
+                Aceptar
+            </button>
+
+            <button class="boton" (click)="cerrarModalConfimaGuardar()">
+                Cancelar
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- MODAL DE MENSAJE DE CIERRE -->
+<div class="modal-backdrop" *ngIf="mostrarModalMensajeCierre">
+    <div class="modal-contenido">
+        <h3 class="modal-titulo">
+            Mensaje
+        </h3>
+
+        <p class="modal-mensaje">
+            {{mensajeCierreModal}}
+        </p>
+
+        <div class="modal-actions">
+            <button class="boton" (click)="cerrarModal()">
+                Aceptar
+            </button>
+        </div>
+    </div>
+</div>
+
+
+<!-- Modal de procesando -->
+<div id="modalCarga" [style.display]="mostrarCarga ? 'block' : 'none'">
+    <div id="modalContenido">⏳ Cargando, por favor espere...</div>
+</div>
+
+
+<app-destino-selector
+    #destinoSelector
+    [abierto]="mostrarModalDestinos"
+    (seleccionado)="onDestinoSeleccionado($event)"
+    (cerrado)="cerrarModalBusquedaDestino()"
+    (nuevo)="mostrarModalNuevoDestino()"
+></app-destino-selector>
+
+<div class="modal-backdrop superior" *ngIf="mostrarModalFormularioDestino">
+    <app-destino-form
+    origen="BandejaVisitas"
+    [modo]="modoFormularioDestino"
+    [destino]="destinoSeleccionado"
+    (guardado)="onDestinoGuardado($event)"
+    (cerrado)="onDestinoCerrado()"
+    ></app-destino-form>
+</div>

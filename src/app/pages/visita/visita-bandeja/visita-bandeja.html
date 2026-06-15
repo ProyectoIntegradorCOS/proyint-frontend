@@ -1,0 +1,256 @@
+<div class="visita-programacion">
+
+    <!-- TÍTULO -->
+    <header>
+        <h1>Planes de visitas de los colaboradores de campo</h1>
+    </header>
+
+    <!-- [CHANGE][autor: cormenos@onp.gob.pe][fecha: 2025-12-24 16:07 UTC-5 (Lima)][desc: Agrega descarga de plantilla e import Excel para carga masiva de planes de visita][obj: visita-bandeja.html] -->
+
+    <!-- FILTROS -->
+    <div class="filtros">
+
+        Equipo:
+        <select [(ngModel)]="equipoSeleccionado" (change)="onEquipoChange()">
+            <option [ngValue]="todosLosEquipos">Todos</option>
+            <option *ngFor="let equipo of listaEquipos" [value]="equipo.id">{{ equipo.nombre }}</option>
+        </select>
+
+        Colaborador:
+        <select id="personas" [(ngModel)]="personaSeleccionada">
+            <option value="todos">Todos</option>
+            <option *ngFor="let persona of listaPersonas" [value]="persona.idUsuario">{{ persona.usuario }}</option>
+        </select>
+
+        Fecha:
+        <input type="date" [(ngModel)]="fechaSeleccionada">
+
+        <!-- Botón buscar -->
+        <button class="boton" (click)="buscar()" title="Realiza la búsqueda de planes de visita">Buscar</button>
+        <!-- <button class="boton" (click)="limpiarFiltros()" title="Limpia los filtros de búsqueda">Limpiar</button> -->
+
+        <!-- <button class="boton" type="button" (click)="exportarExcel()">Exportar</button> -->
+    </div>
+
+    <br/>
+ 
+
+    <!-- Resumen de resultados -->
+    <div class="resumen-resultados">
+
+        @if(totalRegistros == 0) {
+          <span>
+            No se encontraron planes
+          </span>
+        }
+  
+        @if(totalRegistros == 1) {
+          <span>
+            Se encontró 1 plan
+          </span>
+        }
+  
+        @if(totalRegistros > 1) {
+        <span>
+          Se encontraron <strong>{{ totalRegistros }}</strong> planes
+        </span>
+        }
+        
+      
+        @if (mostrarNuevo) {
+        <div class="acciones-derecha">
+            <button class="boton" (click)="nuevo()" class="boton btn-primario" title="Muestra el formulario para el registro de un plan de visita">Nuevo</button>        
+
+            <div class="grupo-plantilla">
+                <button class="boton btn-secundario" type="button" (click)="descargarPlantillaExcel()" title="Descarga la plantilla actualizada para la carga masiva de planes de visita.">Descargar plantilla</button>
+                <button class="boton btn-secundario" (click)="abrirModalMasivo()" title="Muestra el formulario para la carga masiva de planes de visita">Carga masiva</button>                
+            </div>
+        </div>
+        }
+      </div> 
+
+      <br/>
+
+
+
+    <!-- TABLA -->
+    <div class="tabla-contenedor">
+        <table>
+            <thead>
+                <tr>
+                    <th>#</th>                                        
+                    <!-- <th>Equipo</th> -->
+                    <th>Colaborador</th>
+                    <th>Fecha</th>
+                    <th>Estado</th>   
+                    <th>Editar</th>
+                    @if (mostrarEliminar) {
+                    <th>Eliminar</th>
+                    }
+                </tr>
+            </thead>
+
+            <tbody>
+                @for (r of resultados; let i = $index; track r.id) {
+                    <tr>
+                        <td>{{ ((paginaActual - 1) * tamanioPagina) + i + 1 }}</td>                                                
+                        <!-- <td>{{ r.equipoNombre }}</td> -->
+                        <td>{{ r.nombre }}</td>
+                        <td>{{ r.fechaPlan | date:'dd/MM/yyyy' }}</td>
+                        <td>{{ r.estado | estadoPlanVisita}}</td>                        
+                        <td>
+                            @if (mostrarEditar && r.estado !== 'COMPLETED' && esFechaPlanValida(r.fechaPlan)) {
+                            <button class="btn-editar" (click)="editar(r)" title="Editar">✏️</button>
+                            }
+                            @if (!(mostrarEditar && r.estado !== 'COMPLETED' && esFechaPlanValida(r.fechaPlan))) {
+                            <button class="btn-editar" (click)="editar(r)" title="Ver">🔎</button>                            
+                            }
+                        </td> 
+                        <td>
+                            @if (mostrarEliminar) {
+                                @if(r.estado == 'PLANNED') {
+                                    <button class="btn-eliminar" (click)="confirmarEliminar(r)" title="Editar">🗑️</button>
+                                }
+                            }                            
+                        </td>                        
+                    </tr>
+                }
+
+            </tbody>
+        </table>
+    </div>
+
+
+    <br/>
+
+    <!-- Paginación -->
+    <div class="paginacion">
+        <div class="controles">
+    
+        <!-- Primera página -->
+        <button
+            (click)="irPagina(1)"
+            [disabled]="paginaActual === 1"
+            title="Primera página">
+            ⏮
+        </button>
+        
+        <button
+            (click)="irPagina(paginaActual - 1)"
+            [disabled]="paginaActual === 1"
+            title="Anterior">
+            ←
+        </button>
+    
+        <span>
+            Página
+            <select
+            [(ngModel)]="paginaActual"
+            (change)="onCambioPagina()"
+            class="select-pagina">
+            <option
+                *ngFor="let p of paginas"
+                [value]="p">
+                {{ p }}
+            </option>
+            </select>
+            de {{ totalPaginas }}
+        </span>
+    
+        <button
+            (click)="irPagina(paginaActual + 1)"
+            [disabled]="paginaActual === totalPaginas"
+            title="Siguiente">
+            →
+        </button>
+
+        <!-- Última página -->
+        <button
+            (click)="irPagina(totalPaginas)"
+            [disabled]="paginaActual === totalPaginas"
+            title="Última página">
+            ⏭
+        </button>
+    
+        </div>
+    </div>    
+
+
+
+    <div class="modal-backdrop" *ngIf="mostrarModal">
+        <div class="modal-dialog">
+            
+            <visita-form 
+                [equipos]="listaEquipos"
+                [modo]="modoFormulario"
+                [registroEditar]="registroSeleccionado"
+                (cerrar)="cerrarModal()"
+                (guardado)="guardarDesdeModal($event)">
+            </visita-form>
+
+        </div>
+    </div>
+
+
+
+    <!-- MODAL DE MENSAJE -->
+    <div class="modal-backdrop" *ngIf="mostrarModalMensaje">
+        <div class="modal-contenido">
+            <h3 class="modal-titulo">
+                Mensaje
+            </h3>
+
+            <p class="modal-mensaje">
+                {{mensajeModal}}
+            </p>
+
+            <div class="modal-actions">
+                <button class="boton" (click)="cerrarMensajeModal()">
+                    Aceptar
+                </button>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- MODAL MASIVO DE PRUEBA -->
+    <div class="modal-backdrop" *ngIf="mostrarModalMasivo">
+        <div class="modal-dialog-masivo">
+    
+        <app-visita-masivo
+            (cerrar)="cerrarModalMasivo()">
+        </app-visita-masivo>
+    
+        </div>
+    </div>    
+
+    <!-- MODAL DE CONFIRMACION DE ELIMINACION-->
+    <div class="modal-backdrop" *ngIf="mostrarModalConfirmaEliminacion">
+        <div class="modal-contenido">
+            <h3 class="modal-titulo">
+                Confirmación
+            </h3>
+    
+            <p class="modal-mensaje">
+                ¿Desea eliminar el plan de visitas?
+            </p>
+    
+            <div class="modal-actions">
+                <button class="boton" (click)="aceptarEliminar()">
+                    Aceptar
+                </button>
+    
+                <button class="boton" (click)="cancelarEliminar()">
+                    Cancelar
+                </button>
+            </div>
+        </div>
+        </div>
+
+
+    <!-- Modal de procesando -->
+    <div id="modalProcesando" [style.display]="mostrarProcesando ? 'block' : 'none'">
+        <div id="modalContenido">⏳ Cargando, por favor espere...</div>
+    </div>
+
+</div>
