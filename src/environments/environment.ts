@@ -33,6 +33,6 @@ export const environment = {
 
   },
   bffSecret: 'thaqhiri123',
-  mapboxAccessToken: 'pk.eyJ1IjoiY29ybWVub3MiLCJhIjoiY21oMHowMjJsMmpvYzJqcTJ0dDVuYWw5ZyJ9.IXwCQMQVg9zymZNGIyAKNQ',
+  mapboxAccessToken: '${MAPBOX_ACCESS_TOKEN}',
   mapaMiliSegundosRefresco: 10000
 };
