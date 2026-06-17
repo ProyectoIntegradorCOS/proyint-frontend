@@ -8,9 +8,9 @@ export const environment = {
     rutaSaa: 'http://10.50.129.101:9080/appAccesoInternoWeb/jsp/login.jsp'
     */
 
-    /* Backend local de mi pc */    
-    baseUrl: 'http://172.16.18.80:5511',
-    rutaSaa: 'http://10.50.129.101:9080/appAccesoInternoWeb/jsp/login.jsp'
+    /* Backend AWS - ambiente de prueba */
+    baseUrl: 'http://44.237.58.16:5511',
+    rutaSaa: '/login'
     
 
     /* Backend For Frontend de mi pc (para usar el api manager WSO2) */    

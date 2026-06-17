@@ -78,7 +78,12 @@ export class MenuService {
           permisos.push(permiso);
         });
       } else {
-        console.warn('⚠️ Token no contiene permisos reconocibles');
+        console.warn('⚠️ Token no contiene permisos reconocibles, usando menú completo por defecto');
+        const menuCompleto = this.generarMenuPorDefecto();
+        this.menu = menuCompleto;
+        sessionStorage.setItem('menu', JSON.stringify(menuCompleto));
+        this.menuSubject.next(menuCompleto);
+        return menuCompleto;
       }
 
       //console.log('🔍 permisos:', JSON.stringify(permisos,null,2));
@@ -173,6 +178,25 @@ export class MenuService {
     sessionStorage.removeItem('menu');
     this.menuSubject.next([]);
   }  
+
+  private generarMenuPorDefecto(): MenuItem[] {
+    return [
+      {
+        label: 'Thaqhiri',
+        route: '/web',
+        children: [
+          { label: 'Destinos',              route: '/web.destinos',            children: [] },
+          { label: 'Cuestionario',          route: '/web.cuestionario',        children: [] },
+          { label: 'Equipos',               route: '/web.equipos',             children: [] },
+          { label: 'Usuarios',              route: '/web.usuarios',            children: [] },
+          { label: 'Visitas',               route: '/web.visitas',             children: [] },
+          { label: 'Visitas x Reprogramar', route: '/web.visitasxreprogramar', children: [] },
+          { label: 'Seguimiento',           route: '/web.seguimiento',         children: [] },
+          { label: 'Reportes',              route: '/web.reportes',            children: [] },
+        ]
+      }
+    ];
+  }
 
   private ordenarMenu(menu: MenuItem[]): MenuItem[] {
     return [...menu]

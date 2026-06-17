@@ -11,8 +11,6 @@ import { catchError } from 'rxjs/operators'; // Importar catchError
 import { Router } from '@angular/router'; // Importar Router para redirección
 import { SessionService } from '../services/session/session.service';
 import { MensajeService } from '../services/mensaje/mensaje.service';
-import { environment } from '../../../src/environments/environment';
-
 // ⚠️ Lista de URLs a las que NO se debe adjuntar token
 const EXCLUDED_URLS = [
   '/api/auth/token',
@@ -28,8 +26,6 @@ export const AuthInterceptor: HttpInterceptorFn = (req: HttpRequest<any>, next: 
   const router = inject(Router); // Inyectar Router para navegar
   const mensajeService = inject(MensajeService);
   
-  const BFF_SECRET = `${environment.bffSecret}`;
-
   // 1️⃣ Verificar si la URL debe excluirse
   const exclude = EXCLUDED_URLS.some(url => req.url.includes(url));
   if (exclude) {
@@ -46,8 +42,7 @@ export const AuthInterceptor: HttpInterceptorFn = (req: HttpRequest<any>, next: 
     // 4️⃣ Clonar request agregando Authorization (si hay token)
     authReq = req.clone({
       setHeaders: {
-        Authorization: `Bearer ${token}`,
-        "X-BFF-Secret": `${BFF_SECRET}`
+        Authorization: `Bearer ${token}`
       }
     });
   } else {
