@@ -36,7 +36,7 @@ jobs:
         run: npm ci
 
       - name: Build producción
-        run: npm run build -- --configuration production
+        run: npm run build -- --configuration production --base-href /
 
       - name: Subir artefacto de build
         uses: actions/upload-artifact@v4
