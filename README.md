@@ -1,63 +1,51 @@
-# ThaqhiriFrontend
+# proyint-frontend
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.3.8.
+Frontend web del proyecto **THAQHIRI** — interfaz para administradores y líderes de equipo de la ONP. Desarrollado en Angular con integración de mapas Mapbox.
 
-## Development server
+## Tecnologías
 
-To start a local development server, run:
+- **Angular 20**
+- **Mapbox GL JS** — mapas y georreferenciación
+- **Node.js 22 LTS**
+- **GitHub Actions** — CI/CD con despliegue en S3
+
+## Ambientes
+
+| Ambiente | URL | Backend |
+|---|---|---|
+| dev | thaqhiri-dev-frontend-023894313590.s3-website-us-west-2.amazonaws.com | 44.237.58.16:5511 |
+| qa | thaqhiri-qa-frontend-023894313590.s3-website-us-west-2.amazonaws.com | 44.245.108.123:5511 |
+| prod | thaqhiri-prod-frontend-023894313590.s3-website-us-west-2.amazonaws.com | 44.238.218.85:5511 |
+
+## Ejecución local
 
 ```bash
-cd Frontend/Web
 npm ci
 npm start
+# http://localhost:4200
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
-
-Nota: este proyecto usa Angular 20; recomienda Node LTS (por ejemplo 22). Con Node 25 verás un warning de “Unsupported”, aunque puede funcionar en local.
-
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+## Build por ambiente
 
 ```bash
-ng generate component component-name
+npm run build                          # dev (production)
+npm run build -- --configuration qa    # qa
+npm run build -- --configuration prod  # prod
 ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+Los archivos de configuración por ambiente están en `src/environments/`:
 
-```bash
-ng generate --help
-```
+- `environment.ts` — dev
+- `environment.qa.ts` — qa
+- `environment.prod.ts` — prod
 
-## Building
+## CI/CD
 
-To build the project run:
+El pipeline `.github/workflows/deploy.yml` ejecuta builds **en paralelo** para los 3 ambientes:
 
-```bash
-ng build
-```
+1. **Build dev + qa + prod** (paralelo)
+2. **Deploy Dev** → S3 dev (automático tras merge a main)
+3. **Deploy QA** → S3 qa (requiere aprobación manual)
+4. **Deploy Prod** → S3 prod (requiere aprobación manual)
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+El token de Mapbox se inyecta en tiempo de CI con `sed` sobre el archivo de environment correspondiente, evitando almacenarlo en el repositorio.
