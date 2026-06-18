@@ -76,7 +76,40 @@ jobs:
           path: dist/thaqhiri-frontend/browser
           retention-days: 1
 
-  # ── 3. Deploy Dev ──────────────────────────────────────────────────────────
+  # ── 3. Build Prod ──────────────────────────────────────────────────────────
+  build-prod:
+    name: Build Prod
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    permissions:
+      id-token: write
+      contents: read
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Instalar dependencias
+        run: npm ci
+
+      - name: Inyectar Mapbox token
+        run: sed -i "s|\${MAPBOX_ACCESS_TOKEN}|${{ secrets.MAPBOX_ACCESS_TOKEN }}|g" src/environments/environment.prod.ts
+
+      - name: Build Prod
+        run: npm run build -- --configuration prod --base-href /
+
+      - name: Subir artefacto Prod
+        uses: actions/upload-artifact@v4
+        with:
+          name: frontend-dist-prod
+          path: dist/thaqhiri-frontend/browser
+          retention-days: 1
+
+  # ── 4. Deploy Dev ──────────────────────────────────────────────────────────
   deploy-dev:
     name: Deploy → Dev
     needs: build-dev
@@ -107,7 +140,7 @@ jobs:
             --cache-control "no-cache, no-store, must-revalidate" \
             --exclude "*.map"
 
-  # ── 4. Deploy QA ───────────────────────────────────────────────────────────
+  # ── 5. Deploy QA ───────────────────────────────────────────────────────────
   deploy-qa:
     name: Deploy → QA
     needs: [build-qa, deploy-dev]
@@ -134,6 +167,38 @@ jobs:
       - name: Publicar en S3 QA
         run: |
           aws s3 sync dist/ s3://thaqhiri-qa-frontend-023894313590/ \
+            --delete \
+            --cache-control "no-cache, no-store, must-revalidate" \
+            --exclude "*.map"
+
+  # ── 6. Deploy Prod ─────────────────────────────────────────────────────────
+  # Requiere aprobación manual en GitHub (environment protection rule)
+  deploy-prod:
+    name: Deploy → Prod
+    needs: [build-prod, deploy-qa]
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    environment: prod
+    permissions:
+      id-token: write
+      contents: read
+
+    steps:
+      - name: Descargar artefacto Prod
+        uses: actions/download-artifact@v4
+        with:
+          name: frontend-dist-prod
+          path: dist
+
+      - name: Credenciales AWS
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Publicar en S3 Prod
+        run: |
+          aws s3 sync dist/ s3://thaqhiri-prod-frontend-023894313590/ \
             --delete \
             --cache-control "no-cache, no-store, must-revalidate" \
             --exclude "*.map"
