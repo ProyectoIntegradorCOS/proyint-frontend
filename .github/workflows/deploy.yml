@@ -11,9 +11,43 @@ env:
   APP_VERSION: "0.1"
 
 jobs:
+  # ── 0. Tests ───────────────────────────────────────────────────────────────
+  test:
+    name: Dependencias y Test
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Instalar dependencias (npm ci)
+        run: npm ci
+
+      - name: Verificar Angular CLI
+        run: npx ng version
+
+      - name: Ejecutar tests
+        run: npm test -- --watch=false --browsers=ChromeHeadless --no-progress
+
+      - name: Publicar resultados de tests
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results-frontend
+          path: coverage/
+          if-no-files-found: ignore
+          retention-days: 7
+
   # ── 1. Build Dev ───────────────────────────────────────────────────────────
   build-dev:
     name: Build Dev
+    needs: test
     runs-on: ubuntu-latest
     permissions:
       id-token: write
@@ -46,6 +80,7 @@ jobs:
   # ── 2. Build QA ────────────────────────────────────────────────────────────
   build-qa:
     name: Build QA
+    needs: test
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main' && github.event_name == 'push'
     permissions:
@@ -79,6 +114,7 @@ jobs:
   # ── 3. Build Prod ──────────────────────────────────────────────────────────
   build-prod:
     name: Build Prod
+    needs: test
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main' && github.event_name == 'push'
     permissions:
