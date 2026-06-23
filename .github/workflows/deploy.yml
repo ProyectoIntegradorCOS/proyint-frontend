@@ -13,7 +13,7 @@ env:
 jobs:
   # ── 0. Tests ───────────────────────────────────────────────────────────────
   test:
-    name: Instalando Dependencias y Test
+    name: Dependencias y Test
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -30,7 +30,7 @@ jobs:
         run: npm ci
 
       - name: Verificar Angular CLI
-        run: npx ng version --no-color
+        run: npx ng version
 
       - name: Ejecutar tests
         run: npm test -- --watch=false --browsers=ChromeHeadless --no-progress
